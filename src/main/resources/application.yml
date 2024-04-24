@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: trip97
+  # DB Setting
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ssafy
+      password: ssafy
+    url: jdbc:mysql://localhost:3306/trip97?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+
+# Jwt Setting
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+
+# OAuth Setting
+oauth:
+  naver:
+    secret: ${OAUTH_NAVER_SECRET}
+    client-id: HVfS8Bx6TTsiC8oIVVib
+    url:
+      auth: https://nid.naver.com
+      api: https://openapi.naver.com
+
+# MyBatis Setting
+mybatis:
+  type-handlers-package: com.quietjun.oauthtest.model.typehandlers
+  type-aliases-package: com.trip97.modules.*.model
+  mapper-locations: mapper/*.xml
+

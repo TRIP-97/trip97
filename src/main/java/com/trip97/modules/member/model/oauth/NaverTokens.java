@@ -1,4 +1,4 @@
-package com.trip97.modules.user.model.oauth;
+package com.trip97.modules.member.model.oauth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.trip97.modules.user.model.jwt;
+package com.trip97.modules.member.model.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

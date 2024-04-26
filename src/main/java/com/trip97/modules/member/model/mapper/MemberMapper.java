@@ -11,6 +11,7 @@ import com.trip97.modules.member.model.Member;
 public interface MemberMapper {
 
     Optional<Member> findByEmail(String email);
+    Optional<Member> findById(int id);
     Integer save(Member member);
     List<Member> findAll();
 }

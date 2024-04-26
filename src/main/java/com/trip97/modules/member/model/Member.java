@@ -25,4 +25,5 @@ public class Member {
         this.oAuthProvider = oAuthProvider;
         this.friendCode = friendCode;
     }
+    
 }

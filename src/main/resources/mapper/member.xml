@@ -18,13 +18,20 @@
     </insert>
 
     <select id="findByEmail" parameterType="string" resultMap="member">
-        select id, email, nickname, profile_image, introduction, oauth_provider
+        select id, email, nickname, profile_image, introduction, oauth_provider, friend_code
         from members
-        where email = #{email}
+        where id = #{id}
     </select>
+    
+    <select id="findById" parameterType="int" resultMap="member">
+        select id, email, nickname, profile_image, introduction, oauth_provider, friend_code
+        from members
+        where id = #{id}
+    </select>
+    
 
     <select id="findAll" resultMap="member">
-        select id, email, nickname, profile_image, introduction, oauth_provider
+        select id, email, nickname, profile_image, introduction, oauth_provider, friend_code
         from members
     </select>
 

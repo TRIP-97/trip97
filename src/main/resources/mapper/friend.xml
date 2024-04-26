@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.friend.model.mapper.FriendMapper">
+
+	<insert id="insertFriend" parameterType="friend">
+		insert into friends (member_id, counterpart_id)
+		values (#{memberId}, #{counterpartId})
+	</insert>
+
+</mapper>

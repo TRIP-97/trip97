@@ -99,7 +99,7 @@ public class FriendshipServiceImpl implements FriendshipService {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("memberId", friendship.getCounterpartId());
 		map.put("counterpartId", friendship.getMemberId());
-		Friendship counterFriendship = friendshipMapper.selectFriendshipByMemeberIdAndCounterpartId(map);
+		Friendship counterFriendship = friendshipMapper.selectFriendshipByMemberIdAndCounterpartId(map);
 		
 		// 둘 다 상태를 ACCEPT로 변경하기
 		friendship.acceptFriendshipRequest();
@@ -118,5 +118,17 @@ public class FriendshipServiceImpl implements FriendshipService {
 				.build();
 		friendMapper.insertFriend(friend);
 		friendMapper.insertFriend(counterfriend);
+	}
+
+	@Override
+	public void refuseFriendshipRequest(Integer friendshipId) throws Exception {
+		Map<String, Integer> map = new HashMap<>();
+		Friendship friendship = friendshipMapper.selectFriendshipById(friendshipId);
+		map.put("counterpartId", friendship.getMemberId());
+		map.put("memberId", friendship.getCounterpartId());
+		Integer counterpartFriendshipId = friendshipMapper.selectFriendshipByMemberIdAndCounterpartId(map).getId();
+
+		friendshipMapper.deleteFriendshipById(friendshipId);
+		friendshipMapper.deleteFriendshipById(counterpartFriendshipId);
 	}
 }

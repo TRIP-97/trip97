@@ -9,5 +9,5 @@ public interface FriendshipService {
 	void createFriendship(int fromId, int toId) throws Exception;
 	List<WaitingFriendship> getWaitingFriendships(int memberId) throws Exception;
 	void approveFriendshipRequest(Integer friendshipId) throws Exception;
-
+	void refuseFriendshipRequest(Integer friendshipId) throws Exception;
 }

@@ -14,6 +14,7 @@ public interface FriendshipMapper {
 	Integer insertFriendship(Friendship friendship);
 	List<Friendship> selectFriendships(int memberId);
 	Friendship selectFriendshipById(int id);
-	Friendship selectFriendshipByMemeberIdAndCounterpartId(Map<String, Integer> map);
+	Friendship selectFriendshipByMemberIdAndCounterpartId(Map<String, Integer> map);
 	Integer updateFriendshipStatus(Friendship friendship);
+	Integer deleteFriendshipById(int id);
 }

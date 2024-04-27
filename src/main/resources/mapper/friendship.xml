@@ -32,7 +32,7 @@
 		where id = #{id}
 	</select>
 	
-	<select id="selectFriendshipByMemeberIdAndCounterpartId" parameterType="hashmap">
+	<select id="selectFriendshipByMemberIdAndCounterpartId" parameterType="hashmap">
 		select id, member_id, counterpart_id, status, is_from
 		from friendships
 		where member_id = #{memberId} and counterpart_id = #{counterpartId}
@@ -43,5 +43,11 @@
 		set status = #{status}
 		where id = #{id}
 	</update>
+
+	<delete id="deleteFriendshipById" parameterType="int">
+		delete
+		from friendships
+		where id = #{id}
+	</delete>
 	
 </mapper>

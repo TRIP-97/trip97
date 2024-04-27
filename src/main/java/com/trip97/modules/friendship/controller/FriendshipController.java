@@ -25,7 +25,7 @@ public class FriendshipController {
 	@PostMapping
 	public ResponseEntity<?> sendFriendshipRequest(@RequestParam("toUserId") Integer toUserId, @RequestParam("fromUserId") Integer fromUserId) throws Exception {
 		friendshipService.createFriendship(fromUserId, toUserId);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
 	@GetMapping

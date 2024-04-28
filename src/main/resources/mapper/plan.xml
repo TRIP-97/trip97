@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.plan.model.mapper.PlanMapper">
+
+    <resultMap id="plan" type="plan">
+        <result column="travel_group_id" property="travelGroupId"/>
+        <result column="creator_id" property="creatorId"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+    </resultMap>
+
+    <insert id="insertPlan" parameterType="plan">
+        insert into plans (travel_group_id, creator_id, title, overview, start_date, end_date)
+        values (#{travelGroupId}, #{creatorId}, #{title}, #{overview}, #{startDate}, #{endDate})
+    </insert>
+
+    <select id="selectPlanById" parameterType="int" resultMap="plan">
+        select id, travel_group_id, creator_id, title, overview, start_date, end_date
+        from plans
+        where id = #{id}
+    </select>
+
+    <select id="selectPlansByGroupId" parameterType="int" resultMap="plan">
+        select id, travel_group_id, creator_id, title, overview, start_date, end_date
+        from plans
+        where travel_group_id = #{groupId}
+    </select>
+
+    <update id="updatePlan" parameterType="plan">
+        update plans
+        set title = #{title}, overview = #{overview}, start_date = #{startDate}, end_date = #{endDate}
+        where id = #{id}
+    </update>
+
+    <delete id="deletePlan" parameterType="int">
+        delete
+        from plans
+        where id = #{id}
+    </delete>
+
+</mapper>

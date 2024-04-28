@@ -10,8 +10,8 @@ import com.trip97.modules.member.model.Member;
 @Mapper
 public interface MemberMapper {
 
-    Optional<Member> findByEmail(String email);
-    Optional<Member> findById(int id);
-    Integer save(Member member);
-    List<Member> findAll();
+    Integer insertMember(Member member);
+    Optional<Member> selectMemberByEmail(String email);
+    Optional<Member> selectMemberById(int id);
+    Integer updateMember(Member member);
 }

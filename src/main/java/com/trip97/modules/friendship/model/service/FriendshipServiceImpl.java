@@ -74,7 +74,7 @@ public class FriendshipServiceImpl implements FriendshipService {
 		for (Friendship fs : friendships) {
 			// 보낸 요청이 아니고, 수락 대기주인 요청만 조회
 			if (!fs.getIsFrom() && fs.getStatus() == FriendshipStatus.WAITING) {
-				Member waitingFriend = memberMapper.findById(fs.getCounterpartId()).orElseThrow(() -> new Exception("회원 조회 실패"));
+				Member waitingFriend = memberMapper.selectMemberById(fs.getCounterpartId()).orElseThrow(() -> new Exception("회원 조회 실패"));
 				WaitingFriendship wfs = WaitingFriendship.builder()
 						.friendshipId(fs.getId())
 						.friendEmail(waitingFriend.getEmail())

@@ -34,7 +34,7 @@ public class OAuthLoginService {
     }
 
     private Integer findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
-        return memberMapper.findByEmail(oAuthInfoResponse.getEmail())
+        return memberMapper.selectMemberByEmail(oAuthInfoResponse.getEmail())
                 .map(Member::getId)
                 .orElseGet(() -> newMember(oAuthInfoResponse));
     }
@@ -49,7 +49,7 @@ public class OAuthLoginService {
                 .friendCode(randomFriendCode)
                 .build();
     	
-        return memberMapper.save(member);
+        return memberMapper.insertMember(member);
     }
 
     private String makeFriendCode() {
@@ -60,10 +60,6 @@ public class OAuthLoginService {
     			return randomCode;
     		}
     	}
-    }
-    
-    public List<Member> findMembers() {
-        return memberMapper.findAll();
     }
     
 }

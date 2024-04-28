@@ -2,12 +2,15 @@ package com.trip97.modules.member.model;
 
 import com.trip97.modules.member.model.oauth.OAuthProvider;
 
+import jakarta.annotation.security.DenyAll;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 
 @Getter
-@NoArgsConstructor
+@Builder
 public class Member {
 
     private Integer id;
@@ -17,13 +20,5 @@ public class Member {
     private String introduction;
     private String friendCode;
     private OAuthProvider oAuthProvider;
-
-    @Builder
-    public Member(String email, String nickname, OAuthProvider oAuthProvider, String friendCode) {
-        this.email = email;
-        this.nickname = nickname;
-        this.oAuthProvider = oAuthProvider;
-        this.friendCode = friendCode;
-    }
-    
+    private Boolean isDeleted;
 }

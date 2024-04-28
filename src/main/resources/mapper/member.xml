@@ -7,9 +7,10 @@
         <result column="profile_image" property="profileImage" />
         <result column="oauth_provider" property="oAuthProvider" />
         <result column="friend_code" property="friendCode" />
+        <result column="is_deleted" property="isDeleted" />
     </resultMap>
 
-    <insert id="save" parameterType="member">
+    <insert id="insertMember" parameterType="member">
         insert into members (email, nickname, oauth_provider, friend_code)
         values (#{email}, #{nickname}, #{oAuthProvider}, #{friendCode})
         <selectKey resultType="int" keyProperty="id" order="AFTER">
@@ -17,22 +18,22 @@
         </selectKey>
     </insert>
 
-    <select id="findByEmail" parameterType="string" resultMap="member">
-        select id, email, nickname, profile_image, introduction, oauth_provider, friend_code
+    <select id="selectMemberByEmail" parameterType="string" resultMap="member">
+        select id, email, nickname, profile_image, introduction, friend_code, oauth_provider, is_deleted
+        from members
+        where email = #{email}
+    </select>
+    
+    <select id="selectMemberById" parameterType="int" resultMap="member">
+        select id, email, nickname, profile_image, introduction, friend_code, oauth_provider, is_deleted
         from members
         where id = #{id}
     </select>
-    
-    <select id="findById" parameterType="int" resultMap="member">
-        select id, email, nickname, profile_image, introduction, oauth_provider, friend_code
-        from members
-        where id = #{id}
-    </select>
-    
 
-    <select id="findAll" resultMap="member">
-        select id, email, nickname, profile_image, introduction, oauth_provider, friend_code
-        from members
-    </select>
+    <update id="updateMember" parameterType="member">
+        update members
+        set nickname = #{nickname}, profile_image = #{profileImage}, introduction = #{introduction}
+        where id = #{id}
+    </update>
 
 </mapper>

@@ -27,7 +27,7 @@ public class AuthTokensGenerator {
         return AuthTokens.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
 
-    public Long extractMemberId(String accessToken) {
-        return Long.valueOf(jwtTokenProvider.extractSubject(accessToken));
+    public Integer extractMemberId(String accessToken) {
+        return Integer.valueOf(jwtTokenProvider.extractSubject(accessToken));
     }
 }

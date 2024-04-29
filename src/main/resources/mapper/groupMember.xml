@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.groupMember.model.mapper.GroupMemberMapper">
+
+    <resultMap id="groupMember" type="groupMember">
+        <result column="member_id" property="memberId"/>
+        <result column="group_id" property="groupId"/>
+        <result column="nickname" property="memberNickname"/>
+        <result column="profile_image" property="memberProfileImage"/>
+    </resultMap>
+
+    <insert id="insertGroupMember" parameterType="groupMember">
+        insert into group_members (member_id, group_id, status)
+        values (#{memberId}, #{groupId}, #{status})
+    </insert>
+
+    <select id="selectWaitingGroupMemberByGroupId" parameterType="int" resultMap="groupMember">
+        select gm.id, gm.member_id, gm.group_id, gm.status, m.nickname, m.profile_image
+        from group_members gm join members m
+        on gm.member_id = m.id
+        where gm.group_id = #{groupId} AND gm.status = 'WAITING';
+    </select>
+
+    <select id="selectAcceptedGroupMemberByGroupId" parameterType="int" resultMap="groupMember">
+        select gm.id, gm.member_id, gm.group_id, gm.status, m.nickname, m.profile_image
+        from group_members gm join members m
+                                   on gm.member_id = m.id
+        where gm.group_id = #{groupId} AND gm.status = 'ACCEPT';
+    </select>
+
+    <update id="acceptGroupMember" parameterType="hashmap">
+        update group_members
+        set status = 'ACCEPT'
+        where group_id = #{groupId} and member_id = #{groupMemberId}
+    </update>
+
+    <delete id="deleteGroupMember" parameterType="hashmap">
+        delete
+        from group_members
+        where group_id = #{groupId} and member_id = #{groupMemberId}
+    </delete>
+
+</mapper>

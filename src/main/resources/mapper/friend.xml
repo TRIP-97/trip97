@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.friend.model.mapper.FriendMapper">
+
+	<resultMap id="friendInfo" type="friendInfo">
+		<result column="profile_image" property="profileImage"/>
+		<result column="memberId" property="id"/>
+	</resultMap>
+
+	<insert id="insertFriend" parameterType="friend">
+		insert into friends (member_id, counterpart_id)
+		values (#{memberId}, #{counterpartId})
+	</insert>
+
+	<select id="selectFriends" parameterType="int" resultMap="friendInfo">
+		select m.id, m.nickname, m.profile_image
+		from members m join friends f
+		on m.id = f.counterpart_id
+		where f.member_id = #{id};
+	</select>
+
+	<delete id="deleteFriend" parameterType="hashmap">
+		delete
+		from friends
+		where member_id = #{fromId} and counterpart_id = #{toId}
+	</delete>
+
+</mapper>

@@ -1,9 +1,10 @@
 package com.trip97.infra.util;
 
-import com.trip97.modules.user.model.oauth.OAuthProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;
+
+import com.trip97.modules.member.model.oauth.OAuthProvider;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;

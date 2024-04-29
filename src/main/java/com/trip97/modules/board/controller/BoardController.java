@@ -6,13 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.trip97.modules.board.model.Board;
@@ -37,14 +31,10 @@ public class BoardController {
 		return new ResponseEntity<Board>(service.getBoardByNo(no),HttpStatus.OK);
 	}
 	
-	@PutMapping("/write")
-	public ResponseEntity<Void> writeBoard(@RequestBody Board board) throws Exception{
+	@PostMapping
+	public ResponseEntity<Board> writeBoard(@RequestBody Board board) throws Exception{
 		int boardNo = service.writeBoard(board);
-		String boardUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/board/{boardNo}").buildAndExpand(boardNo).toUriString();
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .location(new URI(boardUrl))
-                .build();
+        return new ResponseEntity(service.getBoardByNo(boardNo), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("{no}")

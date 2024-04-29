@@ -19,8 +19,6 @@ public class Attraction {
     public int gugunCode;
     public int rating;
     public int reviewCount;
-    
-    
 
     public Attraction(String title, String address, double latitude, double longitude) {
 		super();
@@ -40,4 +38,22 @@ public class Attraction {
         this.sidoCode = sidoCode;
         this.gugunCode = gugunCode;
     }
+
+	public Attraction(int id, String title, String overview, String address, double latitude, double longitude,
+			int contentTypeId, int sidoCode, int gugunCode, int rating, int reviewCount) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.overview = overview;
+		this.address = address;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.contentTypeId = contentTypeId;
+		this.sidoCode = sidoCode;
+		this.gugunCode = gugunCode;
+		this.rating = rating;
+		this.reviewCount = reviewCount;
+	}
+	
+	
 }

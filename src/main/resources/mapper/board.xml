@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.board.model.mapper.BoardMapper">
+
+	<!-- 게시판 조회 -->
+	<select id = "selectBoards" resultType = "Board">
+		SELECT id, title, created_at, view_count, like_count
+		FROM boards
+	</select>
+	
+	<!-- 게시물 조회 -->
+	<select id = "selectBoardByNo" parameterType = "int" resultType = "Board">
+		SELECT id, title, content, created_at, view_count, like_count, writer_nickname, profile_image
+		FROM boards
+		WHERE id = #{no}
+	</select>
+
+	<!-- 조회수 증가 -->
+	<update id = "updateBoardView" parameterType = "int">
+		UPDATE boards
+		SET view_count = view_count + 1
+		WHERE id = #{no}
+	</update> 
+	
+	<!-- 게시물 등록 -->
+	<insert id = "insertBoard" parameterType ="Board">
+		INSERT INTO boards(writer_id, title, content, writer_nickname)
+		VALUES (#{writerId}, #{title}, #{content}, #{writerNickname})
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			SELECT last_insert_id()
+		</selectKey>
+	</insert>
+
+	<!-- 게시물 수정 -->
+	<update id = "updateBoard" parameterType = "Board">
+		UPDATE boards
+		SET title = #{title}, content = #{content}
+		WHERE id = #{id}
+	</update>
+
+	<!-- 게시물 삭제 -->
+	<delete id = "deleteBoard" parameterType = "int">
+		DELETE FROM boards
+		WHERE id = #{no}
+	</delete>
+	
+	<!-- 좋아요 수 업데이트 -->
+	<update id = "updateBoardLike" parameterType = "int">
+		UPDATE boards
+		SET like_count = like_count + 1;
+		WHERE id = #{no}
+	</update>
+</mapper>

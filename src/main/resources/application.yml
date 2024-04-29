@@ -28,3 +28,4 @@ mybatis:
   type-aliases-package: com.trip97.modules.*.model
   mapper-locations: mapper/*.xml
 
+  

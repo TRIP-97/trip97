@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.attraction.model.mapper.AttractionMapper">
+
+
+    <select id = "selectTypeContent" resultType="AttractionContent">
+        SELECT *
+        FROM attraction_contents
+    </select>
+
+    <select id = "selectTypeSido" resultType="Sido">
+        SELECT *
+        FROM sido
+    </select>
+
+    <select id = "selectTypeGugun" parameterType="int" resultType="Gugun">
+        SELECT gugun_code, gugun_name
+        FROM gugun
+        WHERE sido_code = #{sidoCode}
+    </select>
+
+    <select id = "selectContentSidoGugun" parameterType="int" resultType="Attraction">
+        SELECT *
+        FROM attractions
+        WHERE content_type_id = #{contentCode} AND
+              sido_code = #{sidoCode} AND
+              gugun_code = #{gugunCode}
+        LIMIT 10;
+    </select>
+
+    <select id = "selectContentSido" parameterType="int" resultType="Attraction">
+        SELECT *
+        FROM attractions
+        WHERE content_type_id = #{contentCode} AND
+              sido_code = #{sidoCode}
+        LIMIT 10;
+    </select>
+
+    <select id = "selectContent" parameterType="int" resultType="Attraction">
+        SELECT *
+        FROM attractions
+        WHERE content_type_id = #{contentCode}
+        LIMIT 10;
+    </select>
+
+    <select id = "selectSidoGugun" parameterType="int" resultType="Attraction">
+        SELECT *
+        FROM attractions
+        WHERE sido_code = #{sidoCode} AND
+              gugun_code = #{gugunCode}
+        LIMIT 10;
+    </select>
+
+    <select id = "selectSido" parameterType="int" resultType="Attraction">
+        SELECT *
+        FROM attractions
+        WHERE sido_code = #{sidoCode}
+        LIMIT 10;
+    </select>
+    
+    <select id = "selectAttractions" resultType="Attraction">
+    	SELECT *
+    	FROM attractions
+    	LIMIT 10;
+    </select>
+
+    <select id = "selectAttractionById" parameterType="int" resultType="Attraction">
+        SELECT *
+        FROM attractions
+        WHERE id = #{attractionId}
+    </select>
+
+</mapper>

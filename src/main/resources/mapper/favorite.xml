@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.favorite.model.mapper.FavoriteMapper">
+
+    <resultMap id="favoriteResultMap" type="favorite">
+        <result column="member_id" property="memberId" />
+        <result column="attraction_id" property="attractionId" />
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <!-- 즐겨찾기 추가 -->
+    <insert id="insertFavorite" parameterType="favorite">
+        INSERT INTO favorites (member_id, attraction_id)
+        VALUES (#{memberId}, #{attractionId})
+    </insert>
+
+    <!-- ID로 즐겨찾기 조회 -->
+    <select id="selectFavorite" parameterType="int" resultMap="favoriteResultMap">
+        SELECT
+            f.id, f.member_id, f.attraction_id, f.created_at,
+            a.title, a.overview, a.address, a.latitude, a.longitude, a.rating
+        FROM favorites f JOIN attractions a
+        ON f.attraction_id = a.id
+        WHERE f.id = #{id}
+    </select>
+
+    <!-- 멤버 ID로 모든 즐겨찾기 조회 -->
+    <select id="selectFavorites" parameterType="int" resultMap="favoriteResultMap">
+        SELECT
+            f.id, f.member_id, f.attraction_id, f.created_at,
+            a.title, a.overview, a.address, a.latitude, a.longitude, a.rating
+        FROM favorites f JOIN attractions a
+        ON f.attraction_id = a.id
+        WHERE f.member_id = #{memberId}
+    </select>
+
+    <!-- ID로 즐겨찾기 삭제 -->
+    <delete id="deleteFavorite" parameterType="int">
+        DELETE FROM favorites
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

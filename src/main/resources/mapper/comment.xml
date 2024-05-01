@@ -41,4 +41,34 @@
         WHERE id = #{id}
     </delete>
 
+    <insert id="insertHotPlaceComment" parameterType="comment">
+        INSERT INTO hotplace_comments (writer_id, board_id, content)
+        VALUES (#{writerId}, #{boardId}, #{content})
+    </insert>
+
+    <select id="selectHotPlaceCommentsByBoardId" resultMap="commentMap">
+        SELECT c.*, m.nickname, m.profile_image
+        FROM hotplace_comments c JOIN members m
+                             ON c.writer_id = m.id
+        WHERE c.board_id = #{id}
+    </select>
+
+    <select id="selectHotPlaceCommentsByMemberId" resultMap="commentMap">
+        SELECT c.*, m.nickname, m.profile_image
+        FROM hotplace_comments c JOIN members m
+                             ON c.writer_id = m.id
+        WHERE m.id = #{id}
+    </select>
+
+    <update id="updateHotPlaceComment" parameterType="comment">
+        UPDATE hotplace_comments
+        SET content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteHotPlaceComment" parameterType="int">
+        DELETE FROM hotplace_comments
+        WHERE id = #{id}
+    </delete>
+
 </mapper>

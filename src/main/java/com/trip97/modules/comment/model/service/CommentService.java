@@ -7,7 +7,7 @@ import java.util.List;
 public interface CommentService {
 
     Integer registerComment(Comment comment, String boardType);
-    List<Comment> getCommentsByBoardId(Integer id, String boardType);
+    List<Comment> getComments(Integer id, String boardType);
     List<Comment> getCommentsByMemberId(Integer id, String boardType);
     Integer editComment(Comment comment, String boardType);
     Integer removeComment(Integer id, String boardType);

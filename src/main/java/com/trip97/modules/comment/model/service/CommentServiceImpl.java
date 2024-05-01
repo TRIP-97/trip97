@@ -24,7 +24,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getCommentsByBoardId(Integer id, String boardType) {
+    public List<Comment> getComments(Integer id, String boardType) {
         if (boardType.equals("board")) {
             return commentMapper.selectBoardCommentsByBoardId(id);
         } else {

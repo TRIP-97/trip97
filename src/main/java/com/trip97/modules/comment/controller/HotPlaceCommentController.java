@@ -12,15 +12,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
-@RequestMapping("/board/{boardId}/comment")
+@RequestMapping("/hotplace/{hotplaceId}/comment")
 @RequiredArgsConstructor
-public class BoardCommentController {
+public class HotPlaceCommentController {
 
     private final CommentService commentService;
 
     @GetMapping
-    public ResponseEntity<?> getCommentList(@PathVariable int boardId) {
-        List<Comment> list = commentService.getComments(boardId, "board");
+    public ResponseEntity<?> getCommentList(@PathVariable int hotplaceId) {
+        List<Comment> list = commentService.getComments(hotplaceId, "hotPlace");
         if (list != null && !list.isEmpty()) {
             return getListResponseEntity(list);
         } else {
@@ -29,24 +29,24 @@ public class BoardCommentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addComment(@PathVariable int boardId, @RequestParam int memberId, @RequestBody Comment comment) {
+    public ResponseEntity<?> addComment(@PathVariable int hotplaceId, @RequestParam int memberId, @RequestBody Comment comment) {
         comment.setWriterId(memberId);
-        commentService.registerComment(comment, "board");
-        List<Comment> list = commentService.getComments(boardId, "board");
+        commentService.registerComment(comment, "hotPlace");
+        List<Comment> list = commentService.getComments(hotplaceId, "hotPlace");
         return getListResponseEntity(list);
     }
 
     @PutMapping("/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable int boardId, @RequestBody Comment comment) {
-        commentService.editComment(comment, "board");
-        List<Comment> list = commentService.getComments(boardId, "board");
+    public ResponseEntity<?> updateComment(@PathVariable int hotplaceId, @RequestBody Comment comment) {
+        commentService.editComment(comment, "hotPlace");
+        List<Comment> list = commentService.getComments(hotplaceId, "hotPlace");
         return getListResponseEntity(list);
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable int boardId, @PathVariable int commentId) {
-        commentService.removeComment(commentId, "board");
-        List<Comment> list = commentService.getComments(boardId, "board");
+    public ResponseEntity<?> deleteComment(@PathVariable int hotplaceId, @PathVariable int commentId) {
+        commentService.removeComment(commentId, "hotPlace");
+        List<Comment> list = commentService.getComments(hotplaceId, "hotPlace");
         if (list != null && !list.isEmpty()) {
             return getListResponseEntity(list);
         } else {

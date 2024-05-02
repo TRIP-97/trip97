@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.review.model.mapper.ReviewMapper">
+
+    <resultMap id="reviewResultMap" type="review">
+        <result column="attraction_id" property="attractionId" />
+        <result column="writer_id" property="writerId" />
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <insert id="insertReview" parameterType="review">
+        INSERT INTO `reviews` (`attraction_id`, `writer_id`, `content`, `rating`)
+        VALUES (#{attractionId}, #{writerId}, #{content}, #{rating})
+    </insert>
+
+    <select id="selectAllReviewsByAttractionId" parameterType="int" resultMap="reviewResultMap">
+        SELECT `id`, `attraction_id`, `writer_id`, `content`, `rating`, `created_at`
+        FROM `reviews`
+        WHERE `attraction_id` = #{attractionId}
+    </select>
+
+    <update id="updateReview" parameterType="review">
+        UPDATE `reviews`
+        SET `content` = #{content}, `rating` = #{rating}
+        WHERE `id` = #{id}
+    </update>
+
+    <delete id="deleteReview" parameterType="int">
+        DELETE FROM `reviews`
+        WHERE `id` = #{id}
+    </delete>
+
+
+</mapper>

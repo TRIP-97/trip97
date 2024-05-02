@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.member.model.mapper.MemberMapper">
+
+    <resultMap id="member" type="member">
+        <result column="profile_image" property="profileImage" />
+        <result column="oauth_provider" property="oAuthProvider" />
+        <result column="friend_code" property="friendCode" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <insert id="insertMember" parameterType="member">
+        insert into members (email, nickname, oauth_provider, friend_code)
+        values (#{email}, #{nickname}, #{oAuthProvider}, #{friendCode})
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <select id="selectMemberByEmail" parameterType="string" resultMap="member">
+        select id, email, nickname, profile_image, introduction, friend_code, oauth_provider, is_deleted
+        from members
+        where email = #{email}
+    </select>
+    
+    <select id="selectMemberById" parameterType="int" resultMap="member">
+        select id, email, nickname, profile_image, introduction, friend_code, oauth_provider, is_deleted
+        from members
+        where id = #{id}
+    </select>
+
+    <update id="updateMember" parameterType="member">
+        update members
+        set nickname = #{nickname}, profile_image = #{profileImage}, introduction = #{introduction}
+        where id = #{id}
+    </update>
+
+</mapper>

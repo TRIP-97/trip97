@@ -28,7 +28,8 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Override
 	public int writeBoard(Board board) throws Exception {
-		return mapper.insertBoard(board);
+		mapper.insertBoard(board);
+		return board.getId();
 	}
 
 	@Override

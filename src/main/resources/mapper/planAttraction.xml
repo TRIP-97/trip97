@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip97.modules.planAttraction.model.mapper.PlanAttractionMapper">
+
+    <resultMap id="planAttraction" type="planAttraction">
+        <result column="attraction_id" property="attractionId"/>
+        <result column="plan_id" property="planId"/>
+        <result column="visit_order" property="visitOrder"/>
+        <result column="content_type_id" property="contentTypeId"/>
+        <result column="sido_code" property="sidoCode"/>
+        <result column="gugun_code" property="gugunCode"/>
+        <result column="review_count" property="reviewCount"/>
+    </resultMap>
+
+    <insert id="insertPlanAttraction" parameterType="planAttraction">
+        insert into plan_attractions (attraction_id, plan_id, visit_order)
+        values (#{attractionId}, #{planId}, #{visitOrder})
+    </insert>
+
+    <select id="selectPlanAttractionsByPlanId" parameterType="int" resultMap="planAttraction">
+        select pa.id, pa.attraction_id, pa.plan_id, pa.visit_order, pa.memo,
+            a.sido_code, a.gugun_code, a.content_type_id, a.title, a.overview, a.address, a.latitude, a.longitude, a.rating, a.review_count
+        from plan_attractions as pa join attractions as a
+        on pa.attraction_id = a.id
+        where pa.plan_id = #{planId}
+    </select>
+
+    <select id="selectPlanAttractionsByPlanAttractionId" parameterType="int" resultMap="planAttraction">
+        select pa.id, pa.attraction_id, pa.plan_id, pa.visit_order, pa.memo,
+               a.sido_code, a.gugun_code, a.content_type_id, a.title, a.overview, a.address, a.latitude, a.longitude, a.rating, a.review_count
+        from plan_attractions as pa join attractions as a
+        on pa.attraction_id = a.id
+        where pa.id = #{planAttractionId}
+    </select>
+    
+    <update id="updatePlanAttraction" parameterType="planAttraction">
+        update plan_attractions
+        set visit_order = #{visitOrder}, memo = #{memo}
+        where id = #{id}
+    </update>
+    
+    <delete id="deletePlanAttraction" parameterType="int">
+        delete
+        from plan_attractions
+        where id = #{planAttracionId};
+    </delete>
+
+    <select id="getCountByPlanId" parameterType="int">
+        select count(*)
+        from plan_attractions
+        where plan_id = #{planId}
+    </select>
+</mapper>

@@ -3,6 +3,7 @@ package com.trip97.modules.member.controller;
 import com.trip97.modules.member.model.Member;
 import com.trip97.modules.member.model.jwt.AuthTokens;
 import com.trip97.modules.member.model.jwt.AuthTokensGenerator;
+import com.trip97.modules.member.model.oauth.KakaoLoginParams;
 import com.trip97.modules.member.model.oauth.NaverLoginParams;
 import com.trip97.modules.member.model.service.MemberService;
 import com.trip97.modules.member.model.service.OAuthLoginService;
@@ -34,6 +35,15 @@ public class MemberController {
      */
     @PostMapping("/login/naver")
     public ResponseEntity<AuthTokens> loginNaver(@RequestBody NaverLoginParams params) {
+        return ResponseEntity.ok(oAuthLoginService.login(params));
+    }
+
+    /**
+     * 카카오 로그인
+     */
+
+    @PostMapping("/login/kakao")
+    public ResponseEntity<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params){
         return ResponseEntity.ok(oAuthLoginService.login(params));
     }
 

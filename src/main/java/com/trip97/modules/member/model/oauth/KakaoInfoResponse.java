@@ -1,5 +1,7 @@
 package com.trip97.modules.member.model.oauth;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -14,10 +16,14 @@ public class KakaoInfoResponse implements OAuthInfoResponse{
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class KakaoAccount {
-
-        private String email;
-        private String nickname;
-
+    	private KakaoProfile profile;
+    	private String email;
+    }
+    
+    @Getter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class KakaoProfile {
+    	private String nickname;
     }
 
     @Override
@@ -27,7 +33,7 @@ public class KakaoInfoResponse implements OAuthInfoResponse{
 
     @Override
     public String getNickname() {
-        return kakaoAccount.nickname;
+        return kakaoAccount.profile.nickname;
     }
 
     @Override

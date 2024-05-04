@@ -5,9 +5,11 @@
 
     <resultMap id="member" type="member">
         <result column="profile_image" property="profileImage" />
+        <result column="role" property="role" />
         <result column="oauth_provider" property="oAuthProvider" />
         <result column="friend_code" property="friendCode" />
         <result column="is_deleted" property="isDeleted" />
+        <result column="refresh_token" property="refreshToken" />
     </resultMap>
 
     <insert id="insertMember" parameterType="member">
@@ -19,15 +21,21 @@
     </insert>
 
     <select id="selectMemberByEmail" parameterType="string" resultMap="member">
-        select id, email, nickname, profile_image, introduction, friend_code, oauth_provider, is_deleted
+        select *
         from members
         where email = #{email}
     </select>
     
     <select id="selectMemberById" parameterType="int" resultMap="member">
-        select id, email, nickname, profile_image, introduction, friend_code, oauth_provider, is_deleted
+        select *
         from members
         where id = #{id}
+    </select>
+
+    <select id="selectMemberByRefreshToken" parameterType="string" resultMap="member">
+        select *
+        from members
+        where refresh_token = #{refreshToken}
     </select>
 
     <update id="updateMember" parameterType="member">

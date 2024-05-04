@@ -2,6 +2,7 @@ package com.trip97.modules.member.model.service;
 
 import java.util.List;
 
+import com.trip97.modules.member.model.Role;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,7 @@ public class OAuthLoginService {
                 .nickname(oAuthInfoResponse.getNickname())
                 .oAuthProvider(oAuthInfoResponse.getOAuthProvider())
                 .friendCode(randomFriendCode)
+                .role(Role.USER)
                 .build();
     	
         return memberMapper.insertMember(member);

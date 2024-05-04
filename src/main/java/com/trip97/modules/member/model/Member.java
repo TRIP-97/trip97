@@ -2,12 +2,8 @@ package com.trip97.modules.member.model;
 
 import com.trip97.modules.member.model.oauth.OAuthProvider;
 
-import jakarta.annotation.security.DenyAll;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 
 @Getter
 @Builder
@@ -19,6 +15,8 @@ public class Member {
     private String profileImage;
     private String introduction;
     private String friendCode;
+    private Role role;
     private OAuthProvider oAuthProvider;
     private Boolean isDeleted;
+    private String refreshToken;
 }

@@ -22,6 +22,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@CrossOrigin("*")
 public class MemberController {
 
     private final MemberService memberService;
@@ -35,6 +36,7 @@ public class MemberController {
      */
     @PostMapping("/login/naver")
     public ResponseEntity<AuthTokens> loginNaver(@RequestBody NaverLoginParams params) {
+        log.info("params: {}, {}", params.getAuthorizationCode(), params.getState());
         return ResponseEntity.ok(oAuthLoginService.login(params));
     }
 

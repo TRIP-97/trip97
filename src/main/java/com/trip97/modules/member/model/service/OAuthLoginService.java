@@ -31,6 +31,7 @@ public class OAuthLoginService {
     public AuthTokens login(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         Integer memberId = findOrCreateMember(oAuthInfoResponse);
+        log.info("findOrCreateMember memberId:{}", memberId);
         return authTokensGenerator.generate(memberId);
     }
 
@@ -50,8 +51,8 @@ public class OAuthLoginService {
                 .friendCode(randomFriendCode)
                 .role(Role.USER)
                 .build();
-    	
-        return memberMapper.insertMember(member);
+    	memberMapper.insertMember(member);
+        return member.getId();
     }
 
     private String makeFriendCode() {

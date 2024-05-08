@@ -1,10 +1,13 @@
 package com.trip97.modules.member.model.jwt;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthTokensGenerator {
@@ -28,6 +31,7 @@ public class AuthTokensGenerator {
     }
 
     public Integer extractMemberId(String accessToken) {
+    	log.info("extract memberId:{}", jwtTokenProvider.extractSubject(accessToken));
         return Integer.valueOf(jwtTokenProvider.extractSubject(accessToken));
     }
 }

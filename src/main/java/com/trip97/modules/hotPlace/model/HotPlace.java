@@ -20,4 +20,8 @@ public class HotPlace {
     private Integer likeCount;
     private BigDecimal latitude;
     private BigDecimal longitude;
+
+    public void setWriterId(Integer writerId) {
+        this.writerId = writerId;
+    }
 }

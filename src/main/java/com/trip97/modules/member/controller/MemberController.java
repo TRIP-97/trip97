@@ -22,6 +22,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@CrossOrigin("*")
 public class MemberController {
 
     private final MemberService memberService;
@@ -35,7 +36,10 @@ public class MemberController {
      */
     @PostMapping("/login/naver")
     public ResponseEntity<AuthTokens> loginNaver(@RequestBody NaverLoginParams params) {
-        return ResponseEntity.ok(oAuthLoginService.login(params));
+        log.info("params: {}, {}", params.getAuthorizationCode(), params.getState());
+        AuthTokens token = oAuthLoginService.login(params);
+        log.info("token: {}", token.getAccessToken());
+        return ResponseEntity.ok(token);
     }
 
     /**
@@ -56,9 +60,10 @@ public class MemberController {
     public ResponseEntity<?> getMyInfo(@RequestHeader("Authorization") String token) {
         // "Bearer " 접두어를 제거
         token = token.substring(7);
+        log.info("token: {}", token);
         Integer memberId = authTokensGenerator.extractMemberId(token);
         Optional<Member> member = memberService.getMemberById(memberId);
-
+        log.info("memberId: {}, member: {}", memberId, member);
         if (member != null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));

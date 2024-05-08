@@ -10,11 +10,13 @@
         <result column="created_at" property="createdAt" />
         <result column="view_count" property="viewCount" />
         <result column="like_count" property="likeCount" />
+        <result column="place_name" property="placeName" />
+        <result column="visited_date" property="visitedDate" />
     </resultMap>
 
     <insert id="insertHotPlace" parameterType="HotPlace">
-        INSERT INTO hotPlaces (writer_id, title, content, latitude, longitude)
-        VALUES (#{writerId}, #{title}, #{content}, #{latitude}, #{longitude})
+        INSERT INTO hotPlaces (writer_id, title, content, latitude, longitude, location, place_name, visited_date)
+        VALUES (#{writerId}, #{title}, #{content}, #{latitude}, #{longitude}, #{location}, #{placeName}, #{visitedDate})
         <selectKey keyProperty="id" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -22,7 +24,7 @@
 
     <select id="selectHotPlace" parameterType="int" resultMap="HotPlaceResultMap">
         SELECT hp.id, hp.writer_id, m.nickname, m.profile_image, hp.title, hp.content,
-               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude
+               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude, hp.location, hp.place_name, hp.visited_date
         FROM hotPlaces hp
                  JOIN members m ON hp.writer_id = m.id
         WHERE hp.id = #{id}
@@ -30,14 +32,16 @@
 
     <select id="selectHotPlaces" resultMap="HotPlaceResultMap">
         SELECT hp.id, hp.writer_id, m.nickname, m.profile_image, hp.title, hp.content,
-               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude
+               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude, hp.location, hp.place_name, hp.visited_date
         FROM hotPlaces hp
                  JOIN members m ON hp.writer_id = m.id
+        ORDER BY hp.id DESC;
     </select>
 
     <update id="updateHotPlace" parameterType="HotPlace">
         UPDATE hotPlaces
-        SET title = #{title}, content = #{content}, latitude = #{latitude}, longitude = #{longitude}
+        SET title = #{title}, content = #{content}, latitude = #{latitude}, longitude = #{longitude},
+            location = #{location}, place_name = #{placeName}, visited_date = #{visitedDate}
         WHERE id = #{id}
     </update>
 

@@ -29,8 +29,7 @@ public class HotPlaceCommentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addComment(@PathVariable int hotplaceId, @RequestParam int memberId, @RequestBody Comment comment) {
-        comment.setWriterId(memberId);
+    public ResponseEntity<?> addComment(@PathVariable int hotplaceId, @RequestBody Comment comment) {
         commentService.registerComment(comment, "hotPlace");
         List<Comment> list = commentService.getComments(hotplaceId, "hotPlace");
         return getListResponseEntity(list);

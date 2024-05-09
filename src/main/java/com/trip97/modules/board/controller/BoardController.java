@@ -1,24 +1,19 @@
 package com.trip97.modules.board.controller;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.trip97.modules.board.model.Board;
 import com.trip97.modules.board.model.WriteForm;
 import com.trip97.modules.board.model.file.FileStore;
 import com.trip97.modules.board.model.file.UploadImage;
 import com.trip97.modules.board.model.service.BoardService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
+import java.net.MalformedURLException;
+import java.util.List;
 
 
 @RestController
@@ -37,7 +32,7 @@ public class BoardController {
 	}
 	
 	@GetMapping("{no}")
-	public ResponseEntity<Board> getBoardByNo(@PathVariable("id") int no) throws Exception{
+	public ResponseEntity<Board> getBoardByNo(@PathVariable("no") int no) throws Exception{
 		service.editBoardViewCount(no);
 		return new ResponseEntity<Board>(service.getBoardByNo(no),HttpStatus.OK);
 	}

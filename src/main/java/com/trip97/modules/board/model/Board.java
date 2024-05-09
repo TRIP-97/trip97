@@ -1,14 +1,11 @@
 package com.trip97.modules.board.model;
 
-import java.util.Date;
-import java.util.List;
-
 import com.trip97.modules.board.model.file.UploadImage;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -31,7 +28,26 @@ public class Board {
 		this.content = content;
 		this.writerNickname = writerNickname;
 	}
-	
+
+	public Board(int id, String title, String content, Date createdAt, int viewCount, int likeCount, String writerNickname, String profileImage) {
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.createdAt = createdAt;
+		this.viewCount = viewCount;
+		this.likeCount = likeCount;
+		this.writerNickname = writerNickname;
+		this.profileImage = profileImage;
+	}
+
+	public Board(int id, String title, Date createdAt, int viewCount, int likeCount) {
+		this.id = id;
+		this.title = title;
+		this.createdAt = createdAt;
+		this.viewCount = viewCount;
+		this.likeCount = likeCount;
+	}
+
 	public void setId(int id) {
 		this.id=id;
 	}

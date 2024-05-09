@@ -19,7 +19,7 @@ public class OAuthProviderTypeHandler implements TypeHandler<OAuthProvider> {
      */
     @Override
     public void setParameter(PreparedStatement ps, int i, OAuthProvider parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i, parameter.getKey());
+        ps.setString(i, parameter.name());
     }
 
     /**

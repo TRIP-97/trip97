@@ -7,41 +7,112 @@
         <result column="writer_id" property="writerId" />
         <result column="nickname" property="writerNickname" />
         <result column="profile_image" property="writerProfileImage" />
+        <result column="introduction" property="writerIntroduction" />
         <result column="created_at" property="createdAt" />
         <result column="view_count" property="viewCount" />
         <result column="like_count" property="likeCount" />
         <result column="place_name" property="placeName" />
-        <result column="visited_date" property="visitedDate" />
+        <result column="start_date" property="startDate" />
+        <result column="end_date" property="endDate" />
     </resultMap>
 
     <insert id="insertHotPlace" parameterType="HotPlace">
-        INSERT INTO hotPlaces (writer_id, title, content, latitude, longitude, location, place_name, visited_date)
-        VALUES (#{writerId}, #{title}, #{content}, #{latitude}, #{longitude}, #{location}, #{placeName}, #{visitedDate})
+        INSERT INTO hotPlaces (writer_id, title, content, latitude, longitude, location, place_name, start_date, end_date)
+        VALUES (#{writerId}, #{title}, #{content}, #{latitude}, #{longitude}, #{location}, #{placeName}, #{startDate}, #{endDate})
         <selectKey keyProperty="id" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 
     <select id="selectHotPlace" parameterType="int" resultMap="HotPlaceResultMap">
-        SELECT hp.id, hp.writer_id, m.nickname, m.profile_image, hp.title, hp.content,
-               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude, hp.location, hp.place_name, hp.visited_date
+        SELECT hp.id, hp.writer_id, m.nickname, m.profile_image, m.introduction, hp.title, hp.content,
+               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude, hp.location, hp.place_name, hp.start_date, hp.end_date
         FROM hotPlaces hp
                  JOIN members m ON hp.writer_id = m.id
         WHERE hp.id = #{id}
     </select>
 
-    <select id="selectHotPlaces" resultMap="HotPlaceResultMap">
-        SELECT hp.id, hp.writer_id, m.nickname, m.profile_image, hp.title, hp.content,
-               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude, hp.location, hp.place_name, hp.visited_date
+    <sql id="search">
+        <if test="word != null and word != ''">
+            <if test="key == 'title'">
+                and hp.title like concat('%', #{word}, '%')
+            </if>
+            <if test="key == 'member_nickname'">
+                and m.nickname = #{word}
+            </if>
+        </if>
+    </sql>
+
+
+    <select id="selectHotPlacesOrderByCreatedDate" resultMap="HotPlaceResultMap">
+        SELECT hp.id, hp.writer_id, m.nickname, m.profile_image, m.introduction, hp.title, hp.content,
+               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude, hp.location, hp.place_name, hp.start_date, hp.end_date
         FROM hotPlaces hp
                  JOIN members m ON hp.writer_id = m.id
-        ORDER BY hp.id DESC;
+        <include refid="search"></include>
+        ORDER BY hp.id DESC
+        LIMIT #{start}, #{listsize};
     </select>
+
+    <select id="selectHotPlacesOrderByViewCount" resultMap="HotPlaceResultMap">
+        SELECT hp.id, hp.writer_id, m.nickname, m.profile_image, m.introduction, hp.title, hp.content,
+               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude, hp.location, hp.place_name, hp.start_date, hp.end_date
+        FROM hotPlaces hp
+                 JOIN members m ON hp.writer_id = m.id
+        <include refid="search"></include>
+        ORDER BY hp.view_count DESC, hp.id DESC
+        LIMIT #{start}, #{listsize};
+    </select>
+
+    <select id="selectHotPlacesOrderByLikeCount" resultMap="HotPlaceResultMap">
+        SELECT hp.id, hp.writer_id, m.nickname, m.profile_image, m.introduction, hp.title, hp.content,
+               hp.created_at, hp.view_count, hp.like_count, hp.latitude, hp.longitude, hp.location, hp.place_name, hp.start_date, hp.end_date
+        FROM hotPlaces hp
+                 JOIN members m ON hp.writer_id = m.id
+        <include refid="search"></include>
+        ORDER BY hp.like_count DESC, hp.id DESC
+        LIMIT #{start}, #{listsize};
+    </select>
+
+    <select id="getTotalHotPlaceCount" parameterType="map" resultType="int">
+        SELECT count(hp.id)
+        FROM hotPlaces hp
+        JOIN members m ON hp.writer_id = m.id
+        <where>
+            <include refid="search"/>
+        </where>
+    </select>
+
+    <update id="updateHit" parameterType="int">
+        update hotPlaces
+        set view_count = view_count + 1
+        where id = #{hotPlaceId}
+    </update>
+
+    <select id="isLiked" parameterType="map" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1 FROM hotplace_likes
+            WHERE member_id = #{memberId}
+            AND hot_place_id = #{hotPlaceId}
+        )
+    </select>
+
+    <insert id="insertLike" parameterType="map">
+        INSERT INTO hotplace_likes (member_id, hot_place_id)
+        VALUES (#{memberId}, #{hotPlaceId})
+    </insert>
+
+    <update id="incrementLikeCount" parameterType="int">
+        UPDATE hotPlaces
+        SET like_count = like_count + 1
+        WHERE id = #{hotPlaceId}
+    </update>
+
 
     <update id="updateHotPlace" parameterType="HotPlace">
         UPDATE hotPlaces
         SET title = #{title}, content = #{content}, latitude = #{latitude}, longitude = #{longitude},
-            location = #{location}, place_name = #{placeName}, visited_date = #{visitedDate}
+            location = #{location}, place_name = #{placeName}, start_date = #{startDate}, end_date = #{end_date}
         WHERE id = #{id}
     </update>
 

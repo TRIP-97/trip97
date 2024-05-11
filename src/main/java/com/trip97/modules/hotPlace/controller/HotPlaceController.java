@@ -1,8 +1,10 @@
 package com.trip97.modules.hotPlace.controller;
 
 import com.trip97.modules.hotPlace.model.HotPlace;
+import com.trip97.modules.hotPlace.model.HotPlaceListDto;
 import com.trip97.modules.hotPlace.model.service.HotPlaceService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,8 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/hotplace")
 @RequiredArgsConstructor
@@ -20,12 +23,12 @@ public class HotPlaceController {
     private final HotPlaceService hotPlaceService;
 
     @GetMapping
-    public ResponseEntity<?> getHotPlaces() {
-        List<HotPlace> list = hotPlaceService.getHotPlaces();
-        if (list != null && !list.isEmpty()) {
+    public ResponseEntity<?> getHotPlaces(@RequestParam Map<String, String> map) {
+        HotPlaceListDto hotPlaceList = hotPlaceService.getHotPlaces(map);
+        if (hotPlaceList != null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-            return ResponseEntity.ok().headers(headers).body(list);
+            return ResponseEntity.ok().headers(headers).body(hotPlaceList);
         } else {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
@@ -35,6 +38,7 @@ public class HotPlaceController {
     public ResponseEntity<?> getHotPlaceById(@PathVariable("id") Integer id) {
         HotPlace hotPlace = hotPlaceService.getHotPlace(id);
         if (hotPlace != null) {
+            hotPlaceService.updateHit(id);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
             return ResponseEntity.ok().headers(headers).body(hotPlace);
@@ -64,6 +68,20 @@ public class HotPlaceController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> removeHotPlace(@PathVariable int id) {
         hotPlaceService.removeHotPlace(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/api/like")
+    public ResponseEntity<?> checkLike(@RequestParam int memberId, @RequestParam int hotPlaceId) {
+        log.info("checkLike 컨트롤러 호출!");
+        return ResponseEntity.ok(hotPlaceService.isLiked(memberId, hotPlaceId));
+    }
+
+    @PutMapping("/api/like")
+    public ResponseEntity<?> updateLike(@RequestBody Map<String, Integer> params) {
+        int memberId = params.get("memberId");
+        int hotPlaceId = params.get("hotPlaceId");
+        hotPlaceService.updateLike(memberId, hotPlaceId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -13,6 +13,7 @@ public class HotPlace {
     private Integer writerId;
     private String writerNickname;
     private String writerProfileImage;
+    private String writerIntroduction;
     private String title;
     private String content;
     private String createdAt;
@@ -22,7 +23,8 @@ public class HotPlace {
     private BigDecimal longitude;
     private String location;
     private String placeName;
-    private String visitedDate;
+    private String startDate;
+    private String endDate;
 
     public void setWriterId(Integer writerId) {
         this.writerId = writerId;

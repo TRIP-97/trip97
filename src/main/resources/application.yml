@@ -8,7 +8,9 @@ spring:
       username: ssafy
       password: ssafy
     url: jdbc:mysql://localhost:3306/trip97?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
-
+  web:
+    resources:
+      static-locations: "file:///C:/trip97/"
 # Jwt Setting
 jwt:
   secret-key: ${JWT_SECRET_KEY}
@@ -36,4 +38,10 @@ mybatis:
   type-aliases-package: com.trip97.modules.*.model
   mapper-locations: mapper/*.xml
 
-  
+# file upload path : window
+file:
+  path: C:/trip97/
+
+# local domain
+local:
+  domain: http://localhost:8080

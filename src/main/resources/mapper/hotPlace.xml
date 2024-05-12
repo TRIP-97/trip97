@@ -148,4 +148,11 @@
         where hotplace_id = #{hotPlaceId}
     </select>
 
+    <select id="getFileInfo" parameterType="int" resultMap="file">
+        select save_folder, original_file, save_file, url
+        from hotplace_file_info
+        where hotplace_id = #{hotPlaceId}
+        limit 1;
+    </select>
+
 </mapper>

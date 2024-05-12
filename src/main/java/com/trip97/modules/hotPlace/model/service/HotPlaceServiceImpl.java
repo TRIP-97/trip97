@@ -66,6 +66,15 @@ public class HotPlaceServiceImpl implements HotPlaceService {
             list = hotPlaceMapper.selectHotPlacesOrderByLikeCount(param);
         }
 
+        for (HotPlace hotPlace : list) {
+            FileInfoDto fileInfoDto = hotPlaceMapper.getFileInfo(hotPlace.getId());
+            if (fileInfoDto != null) {
+                List<FileInfoDto> files = new ArrayList<>();
+                files.add(fileInfoDto);
+                hotPlace.setFileInfos(files);
+            }
+        }
+
         int totalArticleCount = hotPlaceMapper.getTotalHotPlaceCount(param);
         int totalPageCount = (totalArticleCount - 1) / sizePerPage + 1;
 

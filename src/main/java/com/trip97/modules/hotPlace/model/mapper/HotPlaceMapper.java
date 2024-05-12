@@ -24,4 +24,5 @@ public interface HotPlaceMapper {
     Integer updateHotPlace(HotPlace hotPlace);
     Integer deleteHotPlace(Integer id);
     List<FileInfoDto> fileInfoList(int hotPlaceId);
+    FileInfoDto getFileInfo(int hotPlaceId);
 }

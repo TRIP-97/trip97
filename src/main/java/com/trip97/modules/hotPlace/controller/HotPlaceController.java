@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,23 +62,102 @@ public class HotPlaceController {
     }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> registerHotPlace(@RequestPart("hotPlace") HotPlace hotPlace, @RequestPart("upfile") MultipartFile[] files, HttpServletRequest request) throws IOException {
+    public ResponseEntity<?> registerHotPlace(@RequestPart("hotPlace") HotPlace hotPlace, @RequestPart(value = "upfile", required = false) MultipartFile[] files, HttpServletRequest request) throws IOException {
         String contentType = request.getContentType();
-        log.info("Received Content-Type: {}", contentType);
-        //  FileUpload 관련 설정.
-        log.info("uploadPath : {}", uploadPath);
-        log.info("MultipartFile.isEmpty : {}", files[0].isEmpty());
+        processImageFiles(hotPlace, files);
+
+        hotPlaceService.registerHotPlace(hotPlace);
+
+        HotPlace createdHotPlace = hotPlaceService.getHotPlace(hotPlace.getId());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(createdHotPlace);
+    }
+
+    private void processImageFiles(HotPlace hotPlace, MultipartFile[] files) throws IOException {
+        String today = new SimpleDateFormat("yyMMdd").format(new Date());
+        String saveFolder = uploadPath + File.separator + "hotPlace" + File.separator + "upload" + File.separator + today;
+        File folder = new File(saveFolder);
+
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        List<FileInfoDto> fileInfos = new ArrayList<>();
+
+        if (files != null && !files[0].isEmpty()) {
+            // 파일들을 처리하는 기존 로직
+            for (MultipartFile mfile : files) {
+                FileInfoDto fileInfoDto = processSingleFile(today, folder, mfile);
+                fileInfos.add(fileInfoDto);
+            }
+        } else {
+            // 랜덤 이미지 선택 로직
+            FileInfoDto fileInfoDto = getRandomDefaultImage();
+            fileInfos.add(fileInfoDto);
+        }
+
+        hotPlace.setFileInfos(fileInfos);
+    }
+
+    private FileInfoDto processSingleFile(String today, File folder, MultipartFile mfile) throws IOException {
+        FileInfoDto fileInfoDto = new FileInfoDto();
+        String originalFileName = mfile.getOriginalFilename();
+
+        if (!originalFileName.isEmpty()) {
+            String saveFileName = UUID.randomUUID().toString()
+                    + originalFileName.substring(originalFileName.lastIndexOf('.'));
+            String url = localDomain + "/images/hotPlace/upload/" + today + "/" + saveFileName;
+            fileInfoDto.setSaveFolder(today);
+            fileInfoDto.setOriginalFile(originalFileName);
+            fileInfoDto.setSaveFile(saveFileName);
+            fileInfoDto.setUrl(url);
+            log.info("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", mfile.getOriginalFilename(), saveFileName);
+            mfile.transferTo(new File(folder, saveFileName));
+        }
+
+        return fileInfoDto;
+    }
+
+    private FileInfoDto getRandomDefaultImage() throws IOException {
+        // 정적 리소스 경로
+        File defaultFolder = new File(uploadPath + File.separator + "hotPlace" + File.separator + "randomImages");
+        File[] files = defaultFolder.listFiles();
+        log.info("defaultFolder:", defaultFolder);
+        log.info("files:", files);
+
+        if (files != null && files.length > 0) {
+            File selectedFile = files[new Random().nextInt(files.length)];
+            String url = localDomain + "/images/hotPlace/randomImages/" + selectedFile.getName(); // 웹 접근 경로
+
+            FileInfoDto fileInfoDto = new FileInfoDto();
+            fileInfoDto.setSaveFolder("images");
+            fileInfoDto.setOriginalFile(selectedFile.getName());
+            fileInfoDto.setSaveFile(selectedFile.getName());
+            fileInfoDto.setUrl(url);
+
+            return fileInfoDto;
+        }
+        return null;
+    }
+
+
+    /*private void processImageFiles(HotPlace hotPlace, MultipartFile[] files) throws IOException {
         if (!files[0].isEmpty()) {
             String today = new SimpleDateFormat("yyMMdd").format(new Date());
             String saveFolder = uploadPath + File.separator + today;
             log.info("저장 폴더 : {}", saveFolder);
             File folder = new File(saveFolder);
-            if (!folder.exists())
+
+            if (!folder.exists()) {
                 folder.mkdirs();
+            }
+
             List<FileInfoDto> fileInfos = new ArrayList<>();
             for (MultipartFile mfile : files) {
                 FileInfoDto fileInfoDto = new FileInfoDto();
                 String originalFileName = mfile.getOriginalFilename();
+
                 if (!originalFileName.isEmpty()) {
                     String saveFileName = UUID.randomUUID().toString()
                             + originalFileName.substring(originalFileName.lastIndexOf('.'));
@@ -93,12 +173,7 @@ public class HotPlaceController {
             }
             hotPlace.setFileInfos(fileInfos);
         }
-        hotPlaceService.registerHotPlace(hotPlace);
-        HotPlace createdHotPlace = hotPlaceService.getHotPlace(hotPlace.getId());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(createdHotPlace);
-    }
+    }*/
 
     @PutMapping("{id}")
     public ResponseEntity<?> updateHotPlace(@PathVariable int id, @RequestBody HotPlace hotPlace) {

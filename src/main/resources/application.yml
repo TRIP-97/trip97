@@ -36,4 +36,6 @@ mybatis:
   type-aliases-package: com.trip97.modules.*.model
   mapper-locations: mapper/*.xml
 
-  
+# file upload path : window
+file:
+  path: C:/trip97/hotPlace/upload/

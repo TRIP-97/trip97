@@ -1,6 +1,7 @@
 package com.trip97.modules.hotPlace.model.service;
 
 import com.trip97.infra.util.SecurityUtils;
+import com.trip97.modules.hotPlace.model.FileInfoDto;
 import com.trip97.modules.hotPlace.model.HotPlace;
 import com.trip97.modules.hotPlace.model.HotPlaceListDto;
 import com.trip97.modules.hotPlace.model.mapper.HotPlaceMapper;
@@ -23,9 +24,11 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
     @Override
     public Integer registerHotPlace(HotPlace hotPlace) {
-        Integer memberId = SecurityUtils.getCurrentMemberId();
-        hotPlace.setWriterId(memberId);
         hotPlaceMapper.insertHotPlace(hotPlace);
+        List<FileInfoDto> fileInfos = hotPlace.getFileInfos();
+        if (fileInfos != null && !fileInfos.isEmpty()) {
+            hotPlaceMapper.registerFile(hotPlace);
+        }
         return hotPlace.getId();
     }
 

@@ -10,6 +10,7 @@ import java.util.Map;
 public interface HotPlaceMapper {
 
     Integer insertHotPlace(HotPlace hotPlace);
+    void registerFile(HotPlace hotPlace);
     HotPlace selectHotPlace(Integer id);
     List<HotPlace> selectHotPlacesOrderByCreatedDate(Map<String, Object> param);
     List<HotPlace> selectHotPlacesOrderByViewCount(Map<String, Object> param);

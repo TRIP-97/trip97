@@ -2,11 +2,13 @@ package com.trip97.modules.hotPlace.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
-@Builder
+@Setter
 public class HotPlace {
 
     private Integer id;
@@ -25,8 +27,6 @@ public class HotPlace {
     private String placeName;
     private String startDate;
     private String endDate;
+    private List<FileInfoDto> fileInfos;
 
-    public void setWriterId(Integer writerId) {
-        this.writerId = writerId;
-    }
 }

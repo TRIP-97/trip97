@@ -1,5 +1,6 @@
 package com.trip97.modules.hotPlace.model.mapper;
 
+import com.trip97.modules.hotPlace.model.FileInfoDto;
 import com.trip97.modules.hotPlace.model.HotPlace;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,4 +23,5 @@ public interface HotPlaceMapper {
     void incrementLikeCount(int hotPlaceId);
     Integer updateHotPlace(HotPlace hotPlace);
     Integer deleteHotPlace(Integer id);
+    List<FileInfoDto> fileInfoList(int hotPlaceId);
 }

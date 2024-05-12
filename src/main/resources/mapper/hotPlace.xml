@@ -41,10 +41,10 @@
     </insert>
 
     <insert id="registerFile" parameterType="HotPlace">
-        insert into hotplace_file_info (hotplace_id, save_folder, original_file, save_file)
+        insert into hotplace_file_info (hotplace_id, save_folder, original_file, save_file, url)
         values
         <foreach collection="fileInfos" item="fileinfo" separator=" , ">
-            (#{id}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile})
+            (#{id}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile}, #{fileinfo.url})
         </foreach>
     </insert>
 
@@ -141,5 +141,11 @@
     <delete id="deleteHotPlace" parameterType="int">
         DELETE FROM hotPlaces WHERE id = #{id}
     </delete>
+
+    <select id="fileInfoList" parameterType="int" resultMap="file">
+        select save_folder, original_file, save_file, url
+        from hotplace_file_info
+        where hotplace_id = #{hotPlaceId}
+    </select>
 
 </mapper>

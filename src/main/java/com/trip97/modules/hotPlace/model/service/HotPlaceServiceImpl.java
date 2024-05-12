@@ -34,7 +34,10 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
     @Override
     public HotPlace getHotPlace(Integer id) {
-        return hotPlaceMapper.selectHotPlace(id);
+        HotPlace hotPlace =  hotPlaceMapper.selectHotPlace(id);
+        List<FileInfoDto> fileInfos = hotPlaceMapper.fileInfoList(id);
+        hotPlace.setFileInfos(fileInfos);
+        return hotPlace;
     }
 
     @Override

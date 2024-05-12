@@ -32,8 +32,8 @@ public class HotPlaceController {
     @Value("${file.path}")
     private String uploadPath;
 
-    @Value("${file.path-upload-images}")
-    private String uploadImagePath;
+    @Value("${local.domain}")
+    private String localDomain;
 
     @GetMapping
     public ResponseEntity<?> getHotPlaces(@RequestParam Map<String, String> map) {
@@ -81,9 +81,11 @@ public class HotPlaceController {
                 if (!originalFileName.isEmpty()) {
                     String saveFileName = UUID.randomUUID().toString()
                             + originalFileName.substring(originalFileName.lastIndexOf('.'));
+                    String url = localDomain + "/images/" + today + "/" + saveFileName;
                     fileInfoDto.setSaveFolder(today);
                     fileInfoDto.setOriginalFile(originalFileName);
                     fileInfoDto.setSaveFile(saveFileName);
+                    fileInfoDto.setUrl(url);
                     log.info("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", mfile.getOriginalFilename(), saveFileName);
                     mfile.transferTo(new File(folder, saveFileName));
                 }

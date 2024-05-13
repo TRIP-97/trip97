@@ -141,8 +141,8 @@ public class GroupController {
         // 정적 리소스 경로
         File defaultFolder = new File(uploadPath + File.separator + "group" + File.separator + "randomImages");
         File[] files = defaultFolder.listFiles();
-        log.info("defaultFolder:", defaultFolder);
-        log.info("files:", files);
+        log.info("defaultFolder: {}", defaultFolder);
+        log.info("files: {}", files);
 
         if (files != null && files.length > 0) {
             File selectedFile = files[new Random().nextInt(files.length)];

@@ -37,6 +37,10 @@ public class GroupServiceImpl implements GroupService {
                 .memberId(group.getCreatorId())
                 .status(GroupMemberStatus.ACCEPT)
                 .build();
+        List<GroupFileInfoDto> fileInfos = group.getFileInfos();
+        if (fileInfos != null && !fileInfos.isEmpty()) {
+            groupMapper.registerFile(group);
+        }
         return groupMemberMapper.insertGroupMember(groupMember);
     }
     
@@ -91,7 +95,7 @@ public class GroupServiceImpl implements GroupService {
         String key = map.get("key");
         param.put("key", key == null ? "" : key);
 
-        List<Group> list = groupMapper.selectGroups(param);
+        List<Group> list = groupMapper.selectGroupsByMemberId(param);
        
         for (Group group : list) {
             GroupFileInfoDto fileInfoDto = groupMapper.getFileInfo(group.getId());
@@ -115,7 +119,10 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group selectGroup(Integer groupId) {
-        return groupMapper.selectGroupById(groupId);
+        Group group = groupMapper.selectGroupById(groupId);
+        List<GroupFileInfoDto> fileInfos = groupMapper.fileInfoList(groupId);
+        group.setFileInfos(fileInfos);
+        return group;
     }
 
     @Override

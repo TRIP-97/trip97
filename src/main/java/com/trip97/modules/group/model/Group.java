@@ -20,5 +20,6 @@ public class Group {
     private String location;
     private String startDate;
     private String endDate;
+    private String createdDate;
     List<GroupFileInfoDto> fileInfos;
 }

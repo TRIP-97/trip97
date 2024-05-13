@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip97.modules.attraction.model.mapper.AttractionMapper">
 
-
+	<!-- 드롭다운 불러오기 -->
     <select id = "selectTypeContent" resultType="AttractionContent">
         SELECT *
         FROM attraction_contents
@@ -20,49 +20,56 @@
         WHERE sido_code = #{sidoCode}
     </select>
 
-    <select id = "selectContentSidoGugun" parameterType="int" resultType="Attraction">
+	<!-- 관광지 불러오기 -->
+    <select id = "selectContentSidoGugun" parameterType="Bounds" resultType="Attraction">
         SELECT *
         FROM attractions
-        WHERE content_type_id = #{contentCode} AND
+        WHERE content_type_id = #{content} AND
               sido_code = #{sidoCode} AND
-              gugun_code = #{gugunCode}
-        LIMIT 10;
+              gugun_code = #{gugunCode} AND
+              latitude between #{qa} and #{pa} AND
+              longitude between #{ha} and #{oa}
     </select>
 
-    <select id = "selectContentSido" parameterType="int" resultType="Attraction">
+    <select id = "selectContentSido" parameterType="Bounds" resultType="Attraction">
         SELECT *
         FROM attractions
-        WHERE content_type_id = #{contentCode} AND
-              sido_code = #{sidoCode}
-        LIMIT 10;
+        WHERE content_type_id = #{content} AND
+              sido_code = #{sidoCode} AND
+              latitude between #{qa} and #{pa} AND
+              longitude between #{ha} and #{oa}
     </select>
 
-    <select id = "selectContent" parameterType="int" resultType="Attraction">
+    <select id = "selectContent" parameterType="Bounds" resultType="Attraction">
         SELECT *
         FROM attractions
-        WHERE content_type_id = #{contentCode}
-        LIMIT 10;
+        WHERE content_type_id = #{content} AND
+        	  latitude between #{qa} and #{pa} AND
+              longitude between #{ha} and #{oa}
     </select>
 
-    <select id = "selectSidoGugun" parameterType="int" resultType="Attraction">
+    <select id = "selectSidoGugun" parameterType="Bounds" resultType="Attraction">
         SELECT *
         FROM attractions
         WHERE sido_code = #{sidoCode} AND
-              gugun_code = #{gugunCode}
-        LIMIT 10;
+              gugun_code = #{gugunCode} AND
+              latitude between #{qa} and #{pa} AND
+              longitude between #{ha} and #{oa}
     </select>
 
-    <select id = "selectSido" parameterType="int" resultType="Attraction">
+    <select id = "selectSido" parameterType="Bounds" resultType="Attraction">
         SELECT *
         FROM attractions
-        WHERE sido_code = #{sidoCode}
-        LIMIT 10;
+        WHERE sido_code = #{sidoCode} AND
+        	  latitude between #{qa} and #{pa} AND
+              longitude between #{ha} and #{oa}
     </select>
     
-    <select id = "selectAttractions" resultType="Attraction">
+    <select id = "selectAttractions" parameterType="Bounds" resultType="Attraction">
     	SELECT *
     	FROM attractions
-    	LIMIT 10;
+    	WHERE latitude between #{qa} and #{pa} AND
+              longitude between #{ha} and #{oa}
     </select>
 
     <select id = "selectAttractionById" parameterType="int" resultType="Attraction">

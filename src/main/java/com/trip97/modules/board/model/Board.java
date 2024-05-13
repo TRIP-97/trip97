@@ -40,9 +40,10 @@ public class Board {
 		this.profileImage = profileImage;
 	}
 
-	public Board(int id, String title, Date createdAt, int viewCount, int likeCount) {
+	public Board(int id, String title, Date createdAt, String nickname, int viewCount, int likeCount) {
 		this.id = id;
 		this.title = title;
+		this.writerNickname = nickname;
 		this.createdAt = createdAt;
 		this.viewCount = viewCount;
 		this.likeCount = likeCount;

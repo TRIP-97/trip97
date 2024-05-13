@@ -5,7 +5,7 @@
 
 	<!-- 게시판 조회 -->
 	<select id = "selectBoards" resultType = "Board">
-		SELECT id, title, created_at, view_count, like_count
+		SELECT id, title, created_at, writer_nickname, view_count, like_count
 		FROM boards
 	</select>
 	

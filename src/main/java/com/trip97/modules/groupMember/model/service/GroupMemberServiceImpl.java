@@ -25,6 +25,13 @@ public class GroupMemberServiceImpl implements GroupMemberService {
                 .build();
         return groupMemberMapper.insertGroupMember(groupMember);
     }
+    @Override
+    public Integer findGroupMember(int groupId, int memberId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("groupId", groupId);
+        map.put("memberId", memberId);
+        return groupMemberMapper.countMatchingMembers(map);
+    }
 
     @Override
     public List<GroupMember> getWaitingGroupMemberByGroupId(Integer groupId) {

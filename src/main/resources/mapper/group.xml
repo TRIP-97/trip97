@@ -74,7 +74,7 @@
 	    FROM travel_groups g
 	    JOIN group_members gm ON g.id = gm.group_id
 	    JOIN members m ON g.creator_id = m.id
-	    WHERE gm.member_id = #{memberId}
+	    WHERE gm.member_id = #{memberId} AND gm.status = 'ACCEPT'
 	    ORDER BY g.id DESC
         LIMIT #{start}, #{listsize};
 	</select>

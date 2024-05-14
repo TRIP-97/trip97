@@ -56,7 +56,7 @@ public class GroupController {
         }
     }
     
-    @GetMapping("{groupId}/member")
+    @GetMapping("/member/{memberId}")
     public ResponseEntity<?> getGroupsByMemberId(@RequestParam Map<String, String> map) {
         GroupListDto groupList = groupService.selectGroupsByMemberId(map);
         if (groupList != null) {
@@ -174,6 +174,14 @@ public class GroupController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{groupId}/member/{memberId}")
+    public ResponseEntity<?> findMember(@PathVariable("groupId") int groupId, @PathVariable("memberId") int memberId) {
+        Integer count = groupMemberService.findGroupMember(groupId, memberId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return ResponseEntity.ok().headers(headers).body(count);
+    }
+
     @GetMapping("/{groupId}/member/wait")
     public ResponseEntity<?> getWaitingGroupMemberByGroupId(@PathVariable int groupId) {
         List<GroupMember> list = groupMemberService.getWaitingGroupMemberByGroupId(groupId);
@@ -199,8 +207,8 @@ public class GroupController {
     }
 
     @PostMapping("/{groupId}/member")
-    public ResponseEntity<?> requestGroupMember(@PathVariable int groupId, @RequestParam int memberId) {
-        groupMemberService.requestGroupMember(groupId, memberId);
+    public ResponseEntity<?> requestGroupMember(@PathVariable int groupId, @RequestBody Map<String, String> params) {
+        groupMemberService.requestGroupMember(groupId, Integer.valueOf(params.get("memberId")));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

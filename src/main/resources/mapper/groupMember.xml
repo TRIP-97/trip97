@@ -8,6 +8,7 @@
         <result column="group_id" property="groupId"/>
         <result column="nickname" property="memberNickname"/>
         <result column="profile_image" property="memberProfileImage"/>
+        <result column="introduction" property="memberIntroduction"/>
     </resultMap>
 
     <insert id="insertGroupMember" parameterType="groupMember">
@@ -23,7 +24,7 @@
     </select>
 
     <select id="selectWaitingGroupMemberByGroupId" parameterType="int" resultMap="groupMember">
-        select gm.id, gm.member_id, gm.group_id, gm.status, m.nickname, m.profile_image
+        select gm.id, gm.member_id, gm.group_id, gm.status, m.nickname, m.profile_image, m.introduction
         from group_members gm join members m
         on gm.member_id = m.id
         where gm.group_id = #{groupId} AND gm.status = 'WAITING';

@@ -18,11 +18,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
     @Override
     public Integer requestGroupMember(int groupId, int memberId) {
-        GroupMember groupMember = GroupMember.builder()
-                .groupId(groupId)
-                .memberId(memberId)
-                .status(GroupMemberStatus.WAITING)
-                .build();
+        GroupMember groupMember = new GroupMember(groupId, memberId, GroupMemberStatus.WAITING);
         return groupMemberMapper.insertGroupMember(groupMember);
     }
     @Override

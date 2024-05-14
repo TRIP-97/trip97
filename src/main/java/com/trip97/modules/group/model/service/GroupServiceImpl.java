@@ -32,11 +32,7 @@ public class GroupServiceImpl implements GroupService {
     public Integer createGroup(Group group) {
         groupMapper.insertGroup(group);
         System.out.println(group.getId());
-        GroupMember groupMember = GroupMember.builder()
-                .groupId(group.getId())
-                .memberId(group.getCreatorId())
-                .status(GroupMemberStatus.ACCEPT)
-                .build();
+        GroupMember groupMember = new GroupMember(group.getId(), group.getCreatorId(), GroupMemberStatus.ACCEPT);
         List<GroupFileInfoDto> fileInfos = group.getFileInfos();
         if (fileInfos != null && !fileInfos.isEmpty()) {
             groupMapper.registerFile(group);

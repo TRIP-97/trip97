@@ -25,6 +25,7 @@
         select id, travel_group_id, creator_id, title, overview, start_date, end_date
         from plans
         where travel_group_id = #{groupId}
+        order by id DESC
     </select>
 
     <update id="updatePlan" parameterType="plan">

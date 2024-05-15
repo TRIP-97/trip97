@@ -1,6 +1,7 @@
 package com.trip97.modules.groupMember.model.mapper;
 
 import com.trip97.modules.groupMember.model.GroupMember;
+import com.trip97.modules.groupMember.model.GroupRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -16,4 +17,6 @@ public interface GroupMemberMapper {
     List<GroupMember> selectAcceptedGroupMemberByGroupId(Integer groupId);
     Integer acceptGroupMember(HashMap<String, Integer> map);
     Integer deleteGroupMember(HashMap<String, Integer> map);
+    List<GroupRequest> selectWaitingGroupsForMember(Integer memberId);
+
 }

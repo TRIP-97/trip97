@@ -17,6 +17,7 @@ public class Group {
     private String name;
     private String overview;
     private Integer maxMemberCount;
+    private Integer currentMemberCount;
     private String location;
     private String startDate;
     private String endDate;

@@ -11,6 +11,16 @@
         <result column="introduction" property="memberIntroduction"/>
     </resultMap>
 
+    <resultMap id="groupRequest" type="groupRequest">
+        <result column="groupMemberId" property="requestId"/>
+        <result column="groupId" property="groupId"/>
+        <result column="groupName" property="groupName"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="creatorNickname" property="creatorNickname"/>
+        <result column="creatorProfileImage" property="creatorProfileImage"/>
+    </resultMap>
+
+
     <insert id="insertGroupMember" parameterType="groupMember">
         insert into group_members (member_id, group_id, status)
         values (#{memberId}, #{groupId}, #{status})
@@ -48,5 +58,16 @@
         from group_members
         where group_id = #{groupId} and member_id = #{groupMemberId}
     </delete>
+
+    <select id="selectWaitingGroupsForMember" parameterType="int" resultMap="groupRequest">
+        SELECT gm.id AS groupMemberId, g.id AS groupId, g.name AS groupName, g.creator_id AS creatorId,
+               m.nickname AS creatorNickname, m.profile_image AS creatorProfileImage
+        FROM group_members gm
+                 JOIN travel_groups g ON gm.group_id = g.id
+                 JOIN members m ON g.creator_id = m.id
+        WHERE gm.member_id = #{memberId}
+          AND gm.status = 'WAITING'
+    </select>
+
 
 </mapper>

@@ -5,6 +5,7 @@ import com.trip97.modules.group.model.GroupFileInfoDto;
 import com.trip97.modules.group.model.GroupListDto;
 import com.trip97.modules.group.model.service.GroupService;
 import com.trip97.modules.groupMember.model.GroupMember;
+import com.trip97.modules.groupMember.model.GroupRequest;
 import com.trip97.modules.groupMember.model.service.GroupMemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -222,5 +223,18 @@ public class GroupController {
     public ResponseEntity<?> removeGroupMember(@PathVariable int groupId, @PathVariable int memberId) {
         groupMemberService.removeGroupMember(groupId, memberId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/member/{memberId}/wait")
+    public ResponseEntity<?> getWaitingGroupsForMember(@PathVariable int memberId) {
+        List<GroupRequest> list = groupMemberService.getWaitingGroupsForMember(memberId);
+        if (list != null && !list.isEmpty()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+            return ResponseEntity.ok().headers(headers).body(list);
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
     }
 }

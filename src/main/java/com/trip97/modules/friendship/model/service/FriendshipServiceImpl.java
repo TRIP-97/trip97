@@ -72,7 +72,7 @@ public class FriendshipServiceImpl implements FriendshipService {
 		List<WaitingFriendship> searchResults = new ArrayList<>();
 		
 		for (Friendship fs : friendships) {
-			// 보낸 요청이 아니고, 수락 대기주인 요청만 조회
+			// 보낸 요청이 아니고, 수락 대기중인 요청만 조회
 			if (!fs.getIsFrom() && fs.getStatus() == FriendshipStatus.WAITING) {
 				Member waitingFriend = memberMapper.selectMemberById(fs.getCounterpartId()).orElseThrow(() -> new Exception("회원 조회 실패"));
 				WaitingFriendship wfs = WaitingFriendship.builder()
@@ -80,6 +80,7 @@ public class FriendshipServiceImpl implements FriendshipService {
 						.friendEmail(waitingFriend.getEmail())
 						.friendNickname(waitingFriend.getNickname())
 						.friendProfileImage(waitingFriend.getProfileImage())
+						.friendIntroduction(waitingFriend.getIntroduction())
 						.status(fs.getStatus())
 						.build();
 				searchResults.add(wfs);
@@ -130,5 +131,10 @@ public class FriendshipServiceImpl implements FriendshipService {
 
 		friendshipMapper.deleteFriendshipById(friendshipId);
 		friendshipMapper.deleteFriendshipById(counterpartFriendshipId);
+	}
+
+	@Override
+	public boolean isMemberInFriendships(int memberId) {
+		return friendshipMapper.checkIfMemberExistsInFriendships(memberId);
 	}
 }

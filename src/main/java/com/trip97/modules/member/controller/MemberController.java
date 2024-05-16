@@ -90,4 +90,19 @@ public class MemberController {
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return ResponseEntity.ok().headers(headers).body(updatedMember);
     }
+
+    /**
+     * 친구 코드로 회원 조회
+     */
+    @GetMapping("/search/friendCode")
+    public ResponseEntity<?> searchMemberByFriendCode(@RequestParam String friendCode) {
+        Optional<Member> member = memberService.getMemberByFriendCode(friendCode);
+        if (member.isPresent()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+            return ResponseEntity.ok().headers(headers).body(member);
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+    }
 }

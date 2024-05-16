@@ -10,4 +10,5 @@ public interface FriendshipService {
 	List<WaitingFriendship> getWaitingFriendships(int memberId) throws Exception;
 	void approveFriendshipRequest(Integer friendshipId) throws Exception;
 	void refuseFriendshipRequest(Integer friendshipId) throws Exception;
+	boolean isMemberInFriendships(int memberId) throws Exception;
 }

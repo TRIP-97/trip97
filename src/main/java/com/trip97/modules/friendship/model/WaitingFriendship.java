@@ -11,5 +11,6 @@ public class WaitingFriendship {
 	private String friendNickname;
 	private String friendEmail;
 	private String friendProfileImage;
+	private String friendIntroduction;
 	private FriendshipStatus status;
 }

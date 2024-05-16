@@ -213,7 +213,7 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/{groupId}/member/{memberId}")
+    @PutMapping("/{groupId}/member/{memberId}")
     public ResponseEntity<?> acceptGroupMember(@PathVariable int groupId, @PathVariable int memberId) {
         groupMemberService.acceptGroupMember(groupId, memberId);
         return ResponseEntity.noContent().build();

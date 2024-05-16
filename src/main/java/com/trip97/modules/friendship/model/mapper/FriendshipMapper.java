@@ -17,4 +17,6 @@ public interface FriendshipMapper {
 	Friendship selectFriendshipByMemberIdAndCounterpartId(Map<String, Integer> map);
 	Integer updateFriendshipStatus(Friendship friendship);
 	Integer deleteFriendshipById(int id);
+	Integer deleteFriendshipByDisconnect(Map<String, Integer> map);
+	boolean checkIfMemberExistsInFriendships(int memberId);
 }

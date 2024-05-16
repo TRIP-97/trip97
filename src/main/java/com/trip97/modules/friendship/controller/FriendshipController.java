@@ -23,7 +23,7 @@ public class FriendshipController {
 	private final FriendshipService friendshipService;
 	
 	@PostMapping
-	public ResponseEntity<?> sendFriendshipRequest(@RequestParam("toUserId") Integer toUserId, @RequestParam("fromUserId") Integer fromUserId) throws Exception {
+	public ResponseEntity<?> sendFriendshipRequest(@RequestParam("toUserId") int toUserId, @RequestParam("fromUserId") Integer fromUserId) throws Exception {
 		friendshipService.createFriendship(fromUserId, toUserId);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
@@ -40,7 +40,7 @@ public class FriendshipController {
 		}
 	}
 	
-	@PatchMapping("/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<?> approveFriendship(@PathVariable("id") Integer friendshipId) throws Exception {
 		friendshipService.approveFriendshipRequest(friendshipId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -50,5 +50,13 @@ public class FriendshipController {
 	public ResponseEntity<?> refuseFriendship(@PathVariable("id") Integer friendshipId) throws Exception {
 		friendshipService.refuseFriendshipRequest(friendshipId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	@GetMapping("/member/{id}")
+	public ResponseEntity<?> isMemberInFriendships(@PathVariable Integer id) throws Exception {
+		boolean isMemberInFriendship = friendshipService.isMemberInFriendships(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+		return ResponseEntity.ok().headers(headers).body(isMemberInFriendship);
 	}
 }

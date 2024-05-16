@@ -41,75 +41,81 @@ public class AttractionController {
 
     // 관광지 유형 + 시도 별 + 구군 별 조회
     @GetMapping()
-    public ResponseEntity<List<Attraction>> getAttractionContentSidoGugun
+    public ResponseEntity<List<Attraction>> getAttraction
             (@RequestParam(value = "contentType", defaultValue = "0") int contentTypeId,
             @RequestParam(value = "sidoCode", defaultValue = "0") int sidoCode,
             @RequestParam(value = "gugunCode", defaultValue = "0") int gugunCode,
             @RequestParam(value = "ha") BigDecimal ha,
             @RequestParam(value = "qa") BigDecimal qa,
             @RequestParam(value = "oa") BigDecimal oa,
-            @RequestParam(value = "pa") BigDecimal pa
-            ){
-    	
+            @RequestParam(value = "pa") BigDecimal pa,
+            @RequestParam(value = "title", defaultValue = "") String title){
+
     	Bounds bound = new Bounds(ha,qa,oa,pa);
-    	
-        List<Attraction> attractions=null;
 
-        if(sidoCode==0){
-            gugunCode=0;
-        }
+        bound.setTitle(title);
 
-        // int 값으로 0 이 들어왔다면 그 값은 쓰지 않겠다는 뜻으로 분류한다.
-        if(contentTypeId==0){
-            attractions = contentTypeZero(sidoCode, gugunCode, bound);
-        }else{
-            attractions = contentTypes(contentTypeId, sidoCode, gugunCode, bound);
-        }
+        bound.setContent(contentTypeId);
+        bound.setSidoCode(sidoCode);
+        bound.setGugunCode(gugunCode);
+
+        List<Attraction> attractions=service.getAttractions(bound);
+
+//        if(sidoCode==0){
+//            gugunCode=0;
+//        }
+
+//        // int 값으로 0 이 들어왔다면 그 값은 쓰지 않겠다는 뜻으로 분류한다.
+//        if(contentTypeId==0){
+//            attractions = contentTypeZero(sidoCode, gugunCode, bound);
+//        }else{
+//            attractions = contentTypes(contentTypeId, sidoCode, gugunCode, bound);
+//        }
 
         return new ResponseEntity<List<Attraction>>(attractions,HttpStatus.OK);
     }
 
-    public List<Attraction> contentTypeZero(int sidoCode, int gugunCode, Bounds bound){
-
-        List<Attraction> attractions;
-        
-        bound.setSidoCode(sidoCode);
-        bound.setGugunCode(gugunCode);
-
-        if(sidoCode == 0){
-            attractions = service.getAttractions(bound);
-            return attractions;
-        }else{
-            if(gugunCode == 0){
-                attractions = service.getAttractionSido(bound);
-                return attractions;
-            }
-            attractions = service.getAttractionSidoGugun(bound);
-            return attractions;
-        }
-
-    }
-
-    public List<Attraction> contentTypes(int contentTypeId, int sidoCode, 
-    		int gugunCode, Bounds bound){
-       
-    	List<Attraction> attractions;
-    	bound.setContent(contentTypeId);
-        bound.setSidoCode(sidoCode);
-        bound.setGugunCode(gugunCode);
-
-        if(sidoCode == 0){
-            attractions = service.getAttractionContent(bound);
-            return attractions;
-        }else{
-            if(gugunCode == 0){
-                attractions = service.getAttractionContentSido(bound);
-                return attractions;
-            }
-            attractions = service.getAttractionContentSidoGugun(bound);
-            return attractions;
-        }
-    }
+//    public List<Attraction> contentTypeZero(int sidoCode, int gugunCode, Bounds bound){
+//
+//        List<Attraction> attractions;
+//
+//        bound.setSidoCode(sidoCode);
+//        bound.setGugunCode(gugunCode);
+//
+//        if(sidoCode == 0){
+//            attractions = service.getAttractions(bound);
+//            return attractions;
+//        }else{
+//            if(gugunCode == 0){
+//                attractions = service.getAttractionSido(bound);
+//                return attractions;
+//            }
+//            attractions = service.getAttractionSidoGugun(bound);
+//            return attractions;
+//        }
+//
+//    }
+//
+//    public List<Attraction> contentTypes(int contentTypeId, int sidoCode,
+//    		int gugunCode, Bounds bound){
+//
+//    	List<Attraction> attractions;
+//    	bound.setContent(contentTypeId);
+//        bound.setSidoCode(sidoCode);
+//        bound.setGugunCode(gugunCode);
+//
+//        if(sidoCode == 0){
+//            attractions = service.getAttractionContent(bound);
+//            return attractions;
+//        }else{
+//            if(gugunCode == 0){
+//                attractions = service.getAttractionContentSido(bound);
+//                return attractions;
+//            }
+//            attractions = service.getAttractionContentSidoGugun(bound);
+//            return attractions;
+//        }
+//    }
 
     // 관광지 상세 정보 조회
     @GetMapping("/{attractionId}")

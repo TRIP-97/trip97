@@ -12,15 +12,18 @@ import java.util.List;
 @Mapper
 public interface AttractionMapper {
 
-    // 관광지 유형 + 시도구군 조합
-    List<Attraction> selectContentSidoGugun(Bounds bound);
-    List<Attraction> selectContentSido(Bounds bound);
-    List<Attraction> selectContent(Bounds bound);
+//    // 관광지 유형 + 시도구군 조합
+//    List<Attraction> selectContentSidoGugun(Bounds bound);
+//    List<Attraction> selectContentSido(Bounds bound);
+//    List<Attraction> selectContent(Bounds bound);
+//
+//    // 시도구군 조합
+//    List<Attraction> selectSidoGugun(Bounds bound);
+//    List<Attraction> selectSido(Bounds bound);
+//    List<Attraction> selectAttractions(Bounds bound);
 
-    // 시도구군 조합
-    List<Attraction> selectSidoGugun(Bounds bound);
-    List<Attraction> selectSido(Bounds bound);
-    List<Attraction> selectAttractions(Bounds bound);
+    // 관광지 불러오기
+    List<Attraction> selectAttraction(Bounds bound);
 
     // 드롭다운 불러오기
     List<AttractionContent> selectTypeContent();

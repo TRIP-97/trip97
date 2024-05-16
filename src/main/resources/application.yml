@@ -37,8 +37,7 @@ mybatis:
   type-handlers-package: com.quietjun.oauthtest.model.typehandlers
   type-aliases-package: com.trip97.modules.*.model
   mapper-locations: mapper/*.xml
-<<<<<<< HEAD
-=======
+
 
 # file upload path : window
 file:
@@ -47,4 +46,3 @@ file:
 # local domain
 local:
   domain: http://localhost:8080
->>>>>>> origin

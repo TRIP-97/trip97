@@ -213,6 +213,12 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/{groupId}/member/invite")
+    public ResponseEntity<?> inviteGroupMember(@PathVariable int groupId, @RequestBody Map<String, String> params) {
+        groupMemberService.inviteGroupMember(groupId, Integer.valueOf(params.get("memberId")));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @PutMapping("/{groupId}/member/{memberId}")
     public ResponseEntity<?> acceptGroupMember(@PathVariable int groupId, @PathVariable int memberId) {
         groupMemberService.acceptGroupMember(groupId, memberId);
@@ -235,6 +241,17 @@ public class GroupController {
         } else {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
+    }
 
+    @GetMapping("/member/{memberId}/waitByFriend")
+    public ResponseEntity<?> getWaitingByFriendGroupsForMember(@PathVariable int memberId) {
+        List<GroupRequest> list = groupMemberService.getWaitingByFriendGroupsForMember(memberId);
+        if (list != null && !list.isEmpty()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+            return ResponseEntity.ok().headers(headers).body(list);
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
     }
 }

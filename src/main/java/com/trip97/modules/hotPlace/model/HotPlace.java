@@ -1,6 +1,5 @@
 package com.trip97.modules.hotPlace.model;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

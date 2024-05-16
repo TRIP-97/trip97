@@ -2,6 +2,7 @@ package com.trip97.modules.groupMember.model.service;
 
 import com.trip97.modules.groupMember.model.GroupMember;
 import com.trip97.modules.groupMember.model.GroupMemberStatus;
+import com.trip97.modules.groupMember.model.GroupRequest;
 import com.trip97.modules.groupMember.model.mapper.GroupMemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,15 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
     @Override
     public Integer requestGroupMember(int groupId, int memberId) {
-        GroupMember groupMember = GroupMember.builder()
-                .groupId(groupId)
-                .memberId(memberId)
-                .status(GroupMemberStatus.WAITING)
-                .build();
+        GroupMember groupMember = new GroupMember(groupId, memberId, GroupMemberStatus.WAITING);
         return groupMemberMapper.insertGroupMember(groupMember);
+    }
+    @Override
+    public Integer findGroupMember(int groupId, int memberId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("groupId", groupId);
+        map.put("memberId", memberId);
+        return groupMemberMapper.countMatchingMembers(map);
     }
 
     @Override
@@ -50,5 +54,10 @@ public class GroupMemberServiceImpl implements GroupMemberService {
         map.put("groupId", groupId);
         map.put("groupMemberId", groupMemberId);
         return groupMemberMapper.deleteGroupMember(map);
+    }
+
+    @Override
+    public List<GroupRequest> getWaitingGroupsForMember(Integer memberId) {
+        return groupMemberMapper.selectWaitingGroupsForMember(memberId);
     }
 }

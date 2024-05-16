@@ -64,6 +64,12 @@
             <if test="key == 'member_nickname'">
                 and m.nickname = #{word}
             </if>
+            <if test="key == 'content'">
+                and hp.content like concat('%', #{word}, '%')
+            </if>
+            <if test="key == 'location'">
+                and hp.location like concat('%', #{word}, '%')
+            </if>
         </if>
     </sql>
 
@@ -134,7 +140,7 @@
     <update id="updateHotPlace" parameterType="HotPlace">
         UPDATE hotPlaces
         SET title = #{title}, content = #{content}, latitude = #{latitude}, longitude = #{longitude},
-            location = #{location}, place_name = #{placeName}, start_date = #{startDate}, end_date = #{end_date}
+            location = #{location}, place_name = #{placeName}, start_date = #{startDate}, end_date = #{endDate}
         WHERE id = #{id}
     </update>
 

@@ -32,35 +32,41 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
-    public List<Attraction> getAttractionContentSidoGugun(Bounds bound) {
-        return mapper.selectContentSidoGugun(bound);
-    }
-
-    @Override
-    public List<Attraction> getAttractionContentSido(Bounds bound) {
-        return mapper.selectContentSido(bound);
-    }
-
-    @Override
-    public List<Attraction> getAttractionContent(Bounds bound) {
-        return mapper.selectContent(bound);
-    }
-
-    @Override
-    public List<Attraction> getAttractionSidoGugun(Bounds bound) {
-        return mapper.selectSidoGugun(bound);
-    }
-
-    @Override
-    public List<Attraction> getAttractionSido(Bounds bound) {
-        return mapper.selectSido(bound);
-    }
-
-    @Override
     public List<Attraction> getAttractions(Bounds bound) {
-    	return mapper.selectAttractions(bound);
+        return mapper.selectAttraction(bound);
     }
-    
+
+
+//    @Override
+//    public List<Attraction> getAttractionContentSidoGugun(Bounds bound) {
+//        return mapper.selectContentSidoGugun(bound);
+//    }
+//
+//    @Override
+//    public List<Attraction> getAttractionContentSido(Bounds bound) {
+//        return mapper.selectContentSido(bound);
+//    }
+//
+//    @Override
+//    public List<Attraction> getAttractionContent(Bounds bound) {
+//        return mapper.selectContent(bound);
+//    }
+//
+//    @Override
+//    public List<Attraction> getAttractionSidoGugun(Bounds bound) {
+//        return mapper.selectSidoGugun(bound);
+//    }
+//
+//    @Override
+//    public List<Attraction> getAttractionSido(Bounds bound) {
+//        return mapper.selectSido(bound);
+//    }
+//
+//    @Override
+//    public List<Attraction> getAttractions(Bounds bound) {
+//    	return mapper.selectAttractions(bound);
+//    }
+
     @Override
     public Attraction getAttractionById(int attractionId) {
         return mapper.selectAttractionById(attractionId);

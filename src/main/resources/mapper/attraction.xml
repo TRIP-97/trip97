@@ -3,6 +3,45 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip97.modules.attraction.model.mapper.AttractionMapper">
 
+    <sql id="content">
+        <if test="content != 0">
+            and content_type_id = #{content}
+        </if>
+    </sql>
+
+    <sql id="sido">
+        <if test="sidoCode != 0">
+            and sido_code = #{sidoCode}
+        </if>
+    </sql>
+
+    <sql id="gugun">
+        <if test="gugunCode != 0">
+            and gugun_code = #{gugunCode}
+        </if>
+    </sql>
+
+    <sql id="search">
+        <if test="title != null and title != ''">
+            title like concat('%', #{title}, '%')
+        </if>
+        <if test="title == null or title == ''">
+            latitude between #{qa} and #{pa} AND
+            longitude between #{ha} and #{oa}
+        </if>
+    </sql>
+
+    <!-- 관광지 불러오기 -->
+    <select id="selectAttraction" parameterType="Bounds" resultType="Attraction">
+        SELECT *
+        FROM attractions
+        WHERE
+        <include refid="search"></include>
+        <include refid="sido"></include>
+        <include refid="gugun"></include>
+        <include refid="content"></include>
+    </select>
+
 	<!-- 드롭다운 불러오기 -->
     <select id = "selectTypeContent" resultType="AttractionContent">
         SELECT *
@@ -20,62 +59,69 @@
         WHERE sido_code = #{sidoCode}
     </select>
 
-	<!-- 관광지 불러오기 -->
-    <select id = "selectContentSidoGugun" parameterType="Bounds" resultType="Attraction">
-        SELECT *
-        FROM attractions
-        WHERE content_type_id = #{content} AND
-              sido_code = #{sidoCode} AND
-              gugun_code = #{gugunCode} AND
-              latitude between #{qa} and #{pa} AND
-              longitude between #{ha} and #{oa}
-    </select>
+    <!-- 정적 -->
+<!--	&lt;!&ndash; 관광지 불러오기 &ndash;&gt;-->
+<!--    <select id = "selectContentSidoGugun" parameterType="Bounds" resultType="Attraction">-->
+<!--        SELECT *-->
+<!--        FROM attractions-->
+<!--        WHERE content_type_id = #{content} AND-->
+<!--              sido_code = #{sidoCode} AND-->
+<!--              gugun_code = #{gugunCode} AND-->
+<!--              latitude between #{qa} and #{pa} AND-->
+<!--              longitude between #{ha} and #{oa}-->
+<!--        <include refid="search"></include>-->
+<!--    </select>-->
 
-    <select id = "selectContentSido" parameterType="Bounds" resultType="Attraction">
-        SELECT *
-        FROM attractions
-        WHERE content_type_id = #{content} AND
-              sido_code = #{sidoCode} AND
-              latitude between #{qa} and #{pa} AND
-              longitude between #{ha} and #{oa}
-    </select>
+<!--    <select id = "selectContentSido" parameterType="Bounds" resultType="Attraction">-->
+<!--        SELECT *-->
+<!--        FROM attractions-->
+<!--        WHERE content_type_id = #{content} AND-->
+<!--              sido_code = #{sidoCode} AND-->
+<!--              latitude between #{qa} and #{pa} AND-->
+<!--              longitude between #{ha} and #{oa}-->
+<!--        <include refid="search"></include>-->
+<!--    </select>-->
 
-    <select id = "selectContent" parameterType="Bounds" resultType="Attraction">
-        SELECT *
-        FROM attractions
-        WHERE content_type_id = #{content} AND
-        	  latitude between #{qa} and #{pa} AND
-              longitude between #{ha} and #{oa}
-    </select>
+<!--    <select id = "selectContent" parameterType="Bounds" resultType="Attraction">-->
+<!--        SELECT *-->
+<!--        FROM attractions-->
+<!--        WHERE content_type_id = #{content} AND-->
+<!--        	  latitude between #{qa} and #{pa} AND-->
+<!--              longitude between #{ha} and #{oa}-->
+<!--        <include refid="search"></include>-->
+<!--    </select>-->
 
-    <select id = "selectSidoGugun" parameterType="Bounds" resultType="Attraction">
-        SELECT *
-        FROM attractions
-        WHERE sido_code = #{sidoCode} AND
-              gugun_code = #{gugunCode} AND
-              latitude between #{qa} and #{pa} AND
-              longitude between #{ha} and #{oa}
-    </select>
+<!--    <select id = "selectSidoGugun" parameterType="Bounds" resultType="Attraction">-->
+<!--        SELECT *-->
+<!--        FROM attractions-->
+<!--        WHERE sido_code = #{sidoCode} AND-->
+<!--              gugun_code = #{gugunCode} AND-->
+<!--              latitude between #{qa} and #{pa} AND-->
+<!--              longitude between #{ha} and #{oa}-->
+<!--        <include refid="search"></include>-->
+<!--    </select>-->
 
-    <select id = "selectSido" parameterType="Bounds" resultType="Attraction">
-        SELECT *
-        FROM attractions
-        WHERE sido_code = #{sidoCode} AND
-        	  latitude between #{qa} and #{pa} AND
-              longitude between #{ha} and #{oa}
-    </select>
-    
-    <select id = "selectAttractions" parameterType="Bounds" resultType="Attraction">
-    	SELECT *
-    	FROM attractions
-    	WHERE latitude between #{qa} and #{pa} AND
-              longitude between #{ha} and #{oa}
-    </select>
+<!--    <select id = "selectSido" parameterType="Bounds" resultType="Attraction">-->
+<!--        SELECT *-->
+<!--        FROM attractions-->
+<!--        WHERE sido_code = #{sidoCode} AND-->
+<!--        	  latitude between #{qa} and #{pa} AND-->
+<!--              longitude between #{ha} and #{oa}-->
+<!--        <include refid="search"></include>-->
+<!--    </select>-->
+<!--    -->
+<!--    <select id = "selectAttractions" parameterType="Bounds" resultType="Attraction">-->
+<!--    	SELECT *-->
+<!--    	FROM attractions-->
+<!--    	WHERE latitude between #{qa} and #{pa} AND-->
+<!--              longitude between #{ha} and #{oa}-->
+<!--        <include refid="search"></include>-->
+<!--    </select>-->
 
-    <select id = "selectAttractionById" parameterType="int" resultType="Attraction">
-        SELECT *
-        FROM attractions
-        WHERE id = #{attractionId}
-    </select>
+<!--    <select id = "selectAttractionById" parameterType="int" resultType="Attraction">-->
+<!--        SELECT *-->
+<!--        FROM attractions-->
+<!--        WHERE id = #{attractionId}-->
+<!--    </select>-->
 
 </mapper>

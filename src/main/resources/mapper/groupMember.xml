@@ -69,5 +69,14 @@
           AND gm.status = 'WAITING'
     </select>
 
+    <select id="selectWaitingByFriendGroupsForMember" parameterType="int" resultMap="groupRequest">
+        SELECT gm.id AS groupMemberId, g.id AS groupId, g.name AS groupName, g.creator_id AS creatorId,
+               m.nickname AS creatorNickname, m.profile_image AS creatorProfileImage
+        FROM group_members gm
+                 JOIN travel_groups g ON gm.group_id = g.id
+                 JOIN members m ON g.creator_id = m.id
+        WHERE gm.member_id = #{memberId}
+          AND gm.status = 'WAITING_BY_FRIEND'
+    </select>
 
 </mapper>

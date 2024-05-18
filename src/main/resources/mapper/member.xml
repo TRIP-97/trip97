@@ -32,6 +32,12 @@
         where id = #{id}
     </select>
 
+    <select id="selectMemberByFriendCode" parameterType="string" resultMap="member">
+        select *
+        from members
+        where friend_code = #{friendCode}
+    </select>
+
     <select id="selectMemberByRefreshToken" parameterType="string" resultMap="member">
         select *
         from members

@@ -22,6 +22,13 @@ public class GroupMemberServiceImpl implements GroupMemberService {
         GroupMember groupMember = new GroupMember(groupId, memberId, GroupMemberStatus.WAITING);
         return groupMemberMapper.insertGroupMember(groupMember);
     }
+
+    @Override
+    public Integer inviteGroupMember(int groupId, int memberId) {
+        GroupMember groupMember = new GroupMember(groupId, memberId, GroupMemberStatus.WAITING_BY_FRIEND);
+        return groupMemberMapper.insertGroupMember(groupMember);
+    }
+
     @Override
     public Integer findGroupMember(int groupId, int memberId) {
         Map<String, Object> map = new HashMap<>();
@@ -59,5 +66,10 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     @Override
     public List<GroupRequest> getWaitingGroupsForMember(Integer memberId) {
         return groupMemberMapper.selectWaitingGroupsForMember(memberId);
+    }
+
+    @Override
+    public List<GroupRequest> getWaitingByFriendGroupsForMember(Integer memberId) {
+        return groupMemberMapper.selectWaitingByFriendGroupsForMember(memberId);
     }
 }

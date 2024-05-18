@@ -3,41 +3,102 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip97.modules.plan.model.mapper.PlanMapper">
 
-    <resultMap id="plan" type="plan">
-        <result column="travel_group_id" property="travelGroupId"/>
-        <result column="creator_id" property="creatorId"/>
-        <result column="start_date" property="startDate"/>
-        <result column="end_date" property="endDate"/>
+    <resultMap id="Plan" type="Plan">
+        <id property="id" column="id" />
+        <result property="travelGroupId" column="travel_group_id" />
+        <result property="creatorId" column="creator_id" />
+        <result property="title" column="title" />
+        <result property="overview" column="overview" />
+        <result property="startDate" column="start_date" />
+        <result property="endDate" column="end_date" />
     </resultMap>
 
-    <insert id="insertPlan" parameterType="plan">
-        insert into plans (travel_group_id, creator_id, title, overview, start_date, end_date)
-        values (#{travelGroupId}, #{creatorId}, #{title}, #{overview}, #{startDate}, #{endDate})
-    </insert>
+    <resultMap id="PlanResultMap" type="Plan">
+        <id property="id" column="id" />
+        <result property="travelGroupId" column="travel_group_id" />
+        <result property="creatorId" column="creator_id" />
+        <result property="title" column="title" />
+        <result property="overview" column="overview" />
+        <result property="startDate" column="start_date" />
+        <result property="endDate" column="end_date" />
+        <collection property="dayPlans" ofType="DayPlanDto" select="selectDayPlansByPlanId" column="id" />
+    </resultMap>
 
-    <select id="selectPlanById" parameterType="int" resultMap="plan">
-        select id, travel_group_id, creator_id, title, overview, start_date, end_date
-        from plans
-        where id = #{id}
+    <resultMap id="DayPlanResultMap" type="DayPlanDto">
+        <id property="id" column="id" />
+        <result property="planId" column="plan_id" />
+        <result property="day" column="day" />
+        <collection property="items" ofType="DayPlanItemDto" select="selectDayPlanItemsByDayPlanId" column="id" />
+    </resultMap>
+
+    <resultMap id="DayPlanItemResultMap" type="DayPlanItemDto">
+        <id property="id" column="id" />
+        <result property="dayPlanId" column="day_plan_id" />
+        <result property="type" column="type" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="attractionId" column="attraction_id" />
+        <result property="contentTypeId" column="content_type_id" />
+        <result property="latitude" column="latitude" />
+        <result property="longitude" column="longitude" />
+        <result property="order" column="order" />
+    </resultMap>
+
+    <select id="getPlanById" resultMap="PlanResultMap">
+        SELECT * FROM plans WHERE id = #{id}
     </select>
 
-    <select id="selectPlansByGroupId" parameterType="int" resultMap="plan">
+    <select id="selectDayPlansByPlanId" resultMap="DayPlanResultMap" parameterType="int">
+        SELECT * FROM day_plans WHERE plan_id = #{id}
+    </select>
+
+    <select id="selectDayPlanItemsByDayPlanId" resultMap="DayPlanItemResultMap" parameterType="int">
+        SELECT * FROM day_plan_items WHERE day_plan_id = #{id} ORDER BY `order`
+    </select>
+
+    <select id="selectPlansByGroupId" parameterType="int" resultMap="Plan">
         select id, travel_group_id, creator_id, title, overview, start_date, end_date
         from plans
         where travel_group_id = #{groupId}
         order by id DESC
     </select>
 
-    <update id="updatePlan" parameterType="plan">
-        update plans
-        set title = #{title}, overview = #{overview}, start_date = #{startDate}, end_date = #{endDate}
-        where id = #{id}
+    <insert id="insertPlan">
+        INSERT INTO plans (travel_group_id, creator_id, title, overview, start_date, end_date)
+        VALUES (#{travelGroupId}, #{creatorId}, #{title}, #{overview}, #{startDate}, #{endDate})
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="insertDayPlan">
+        INSERT INTO day_plans (plan_id, day)
+        VALUES (#{planId}, #{day})
+    </insert>
+
+    <insert id="insertDayPlanItem">
+        INSERT INTO day_plan_items (day_plan_id, type, title, content, attraction_id, content_type_id, latitude, longitude, `order`)
+        VALUES (#{dayPlanId}, #{type}, #{title}, #{content}, #{attractionId}, #{contentTypeId}, #{latitude}, #{longitude}, #{order})
+    </insert>
+
+    <delete id="deletePlanById">
+        DELETE FROM plans WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteDayPlanItemById">
+        DELETE FROM day_plan_items WHERE id = #{id}
+    </delete>
+
+    <update id="updatePlan">
+        UPDATE plans
+        SET travel_group_id = #{travelGroupId}, creator_id = #{creatorId}, title = #{title}, overview = #{overview}, start_date = #{startDate}, end_date = #{endDate}
+        WHERE id = #{id}
     </update>
 
-    <delete id="deletePlan" parameterType="int">
-        delete
-        from plans
-        where id = #{id}
-    </delete>
+    <update id="updateDayPlanItemOrder">
+        UPDATE day_plan_items
+        SET `order` = #{order}
+        WHERE id = #{itemId}
+    </update>
 
 </mapper>

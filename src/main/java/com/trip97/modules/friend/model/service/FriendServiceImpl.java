@@ -2,6 +2,7 @@ package com.trip97.modules.friend.model.service;
 
 import com.trip97.modules.friend.model.FriendInfo;
 import com.trip97.modules.friend.model.mapper.FriendMapper;
+import com.trip97.modules.friendship.model.mapper.FriendshipMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 public class FriendServiceImpl implements FriendService {
 
     private final FriendMapper friendMapper;
+    private final FriendshipMapper friendshipMapper;
 
     @Override
     public void removeFriend(int toId, int fromId) {
@@ -26,6 +28,8 @@ public class FriendServiceImpl implements FriendService {
 
         friendMapper.deleteFriend(myFriend);
         friendMapper.deleteFriend(counterFriend);
+        friendshipMapper.deleteFriendshipByDisconnect(myFriend);
+        friendshipMapper.deleteFriendshipByDisconnect(counterFriend);
     }
 
     @Override

@@ -2,9 +2,12 @@ package com.trip97.modules.plan.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 @Getter
-@Builder
+@Setter
 public class Plan {
 
     private Integer id;
@@ -14,5 +17,5 @@ public class Plan {
     private String overview;
     private String startDate;
     private String endDate;
-
+    private List<DayPlanDto> dayPlans;
 }

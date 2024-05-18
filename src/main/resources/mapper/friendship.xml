@@ -49,5 +49,17 @@
 		from friendships
 		where id = #{id}
 	</delete>
+
+	<select id="checkIfMemberExistsInFriendships" parameterType="int" resultType="boolean">
+		SELECT COUNT(1)
+		FROM friendships
+		WHERE member_id = #{memberId} OR counterpart_id = #{memberId}
+	</select>
+
+	<delete id="deleteFriendshipByDisconnect" parameterType="map">
+		delete
+		from friendships
+		where member_id = #{toId} AND counterpart_id = #{fromId}
+	</delete>
 	
 </mapper>

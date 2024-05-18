@@ -5,7 +5,7 @@
 
 	<resultMap id="friendInfo" type="friendInfo">
 		<result column="profile_image" property="profileImage"/>
-		<result column="memberId" property="id"/>
+		<result column="id" property="memberId"/>
 	</resultMap>
 
 	<insert id="insertFriend" parameterType="friend">
@@ -14,7 +14,7 @@
 	</insert>
 
 	<select id="selectFriends" parameterType="int" resultMap="friendInfo">
-		select m.id, m.nickname, m.profile_image
+		select m.id, m.nickname, m.profile_image, m.introduction
 		from members m join friends f
 		on m.id = f.counterpart_id
 		where f.member_id = #{id};

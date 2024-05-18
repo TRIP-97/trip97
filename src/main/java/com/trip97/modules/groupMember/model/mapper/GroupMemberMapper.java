@@ -18,5 +18,5 @@ public interface GroupMemberMapper {
     Integer acceptGroupMember(HashMap<String, Integer> map);
     Integer deleteGroupMember(HashMap<String, Integer> map);
     List<GroupRequest> selectWaitingGroupsForMember(Integer memberId);
-
+    List<GroupRequest> selectWaitingByFriendGroupsForMember(Integer memberId);
 }

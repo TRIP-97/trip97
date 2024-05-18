@@ -52,7 +52,7 @@
     </select>
 
     <select id="selectDayPlanItemsByDayPlanId" resultMap="DayPlanItemResultMap" parameterType="int">
-        SELECT * FROM day_plan_items WHERE day_plan_id = #{id}
+        SELECT * FROM day_plan_items WHERE day_plan_id = #{id} ORDER BY `order`
     </select>
 
     <select id="selectPlansByGroupId" parameterType="int" resultMap="Plan">
@@ -97,7 +97,7 @@
     <update id="updateDayPlanItemOrder">
         UPDATE day_plan_items
         SET `order` = #{order}
-        WHERE id = #{id}
+        WHERE id = #{itemId}
     </update>
 
 </mapper>

@@ -38,6 +38,7 @@
         <result property="title" column="title" />
         <result property="content" column="content" />
         <result property="attractionId" column="attraction_id" />
+        <result property="contentTypeId" column="content_type_id" />
         <result property="latitude" column="latitude" />
         <result property="longitude" column="longitude" />
         <result property="order" column="order" />
@@ -76,8 +77,8 @@
     </insert>
 
     <insert id="insertDayPlanItem">
-        INSERT INTO day_plan_items (day_plan_id, type, title, content, attraction_id, latitude, longitude, `order`)
-        VALUES (#{dayPlanId}, #{type}, #{title}, #{content}, #{attractionId}, #{latitude}, #{longitude}, #{order})
+        INSERT INTO day_plan_items (day_plan_id, type, title, content, attraction_id, content_type_id, latitude, longitude, `order`)
+        VALUES (#{dayPlanId}, #{type}, #{title}, #{content}, #{attractionId}, #{contentTypeId}, #{latitude}, #{longitude}, #{order})
     </insert>
 
     <delete id="deletePlanById">

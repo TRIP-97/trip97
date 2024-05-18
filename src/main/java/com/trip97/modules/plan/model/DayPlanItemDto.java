@@ -15,6 +15,7 @@ public class DayPlanItemDto {
     private String title;
     private String content;
     private Integer attractionId;
+    private Integer contentTypeId;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private int order;

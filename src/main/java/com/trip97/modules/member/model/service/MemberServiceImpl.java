@@ -1,6 +1,7 @@
 package com.trip97.modules.member.model.service;
 
 import com.trip97.modules.member.model.Member;
+import com.trip97.modules.member.model.ProfileImageDto;
 import com.trip97.modules.member.model.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,10 @@ public class MemberServiceImpl implements  MemberService {
 
     @Override
     public Optional<Member> getMemberById(int id) {
-        return memberMapper.selectMemberById(id);
+        Optional<Member> member = memberMapper.selectMemberById(id);
+        ProfileImageDto profileImageDto = memberMapper.getFileInfo(id);
+        member.get().setProfileImage(profileImageDto.getUrl());
+        return member;
     }
 
     @Override
@@ -24,13 +28,16 @@ public class MemberServiceImpl implements  MemberService {
     }
 
     @Override
-    public Integer editMember(Integer memberId, Member member) {
+    public Integer editMember(Integer memberId, Member member, ProfileImageDto profileImageDto) {
         Member updateMember = Member.builder()
                 .id(memberId)
                 .nickname(member.getNickname())
-                .profileImage(member.getProfileImage())
+                .profileImage(profileImageDto.getUrl())
                 .introduction(member.getIntroduction())
                 .build();
+        if (profileImageDto != null) {
+            memberMapper.updateFile(profileImageDto);
+        }
         return memberMapper.updateMember(updateMember);
     }
 }

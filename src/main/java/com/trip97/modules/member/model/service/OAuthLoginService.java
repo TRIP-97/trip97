@@ -1,22 +1,18 @@
 package com.trip97.modules.member.model.service;
 
-import java.util.List;
-
-import com.trip97.modules.member.model.Role;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.stereotype.Service;
-
 import com.trip97.modules.friendship.model.mapper.FriendshipMapper;
 import com.trip97.modules.member.model.Member;
+import com.trip97.modules.member.model.Role;
 import com.trip97.modules.member.model.jwt.AuthTokens;
 import com.trip97.modules.member.model.jwt.AuthTokensGenerator;
 import com.trip97.modules.member.model.mapper.MemberMapper;
 import com.trip97.modules.member.model.oauth.OAuthInfoResponse;
 import com.trip97.modules.member.model.oauth.OAuthLoginParams;
 import com.trip97.modules.member.model.oauth.RequestOAuthInfoService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -36,13 +32,16 @@ public class OAuthLoginService {
     }
 
     private Integer findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
+        System.out.println("들어옴 find");
         return memberMapper.selectMemberByEmail(oAuthInfoResponse.getEmail())
                 .map(Member::getId)
                 .orElseGet(() -> newMember(oAuthInfoResponse));
     }
 
     private int newMember(OAuthInfoResponse oAuthInfoResponse) {
-    	String randomFriendCode = makeFriendCode();
+        System.out.println("들어옴 회원가입");
+
+        String randomFriendCode = makeFriendCode();
     	
     	Member member = Member.builder()
                 .email(oAuthInfoResponse.getEmail())

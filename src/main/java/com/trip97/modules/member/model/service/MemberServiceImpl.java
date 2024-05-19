@@ -29,14 +29,22 @@ public class MemberServiceImpl implements  MemberService {
 
     @Override
     public Integer editMember(Integer memberId, Member member, ProfileImageDto profileImageDto) {
-        Member updateMember = Member.builder()
+        Member updateMember;
+        if (profileImageDto != null) {
+            updateMember = Member.builder()
                 .id(memberId)
                 .nickname(member.getNickname())
                 .profileImage(profileImageDto.getUrl())
                 .introduction(member.getIntroduction())
                 .build();
-        if (profileImageDto != null) {
             memberMapper.updateFile(profileImageDto);
+        } else {
+            updateMember = Member.builder()
+                .id(memberId)
+                .nickname(member.getNickname())
+                .profileImage(member.getProfileImage())
+                .introduction(member.getIntroduction())
+                .build();
         }
         return memberMapper.updateMember(updateMember);
     }

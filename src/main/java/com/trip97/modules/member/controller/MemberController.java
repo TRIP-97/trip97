@@ -48,7 +48,10 @@ public class MemberController {
 
     @PostMapping("/login/kakao")
     public ResponseEntity<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params){
-        return ResponseEntity.ok(oAuthLoginService.login(params));
+        log.info("params: {}, {}", params.getAuthorizationCode());
+        AuthTokens token = oAuthLoginService.login(params);
+        log.info("token: {}", token.getAccessToken());
+        return ResponseEntity.ok(token);
     }
 
     /**

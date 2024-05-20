@@ -22,4 +22,5 @@ public class KakaoLoginParams implements OAuthLoginParams{
         body.add("code",authorizationCode);
         return body;
     }
+
 }

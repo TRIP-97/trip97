@@ -65,6 +65,29 @@
         WHERE sido_code = #{sidoCode}
     </select>
 
+    <select id = "getRating" parameterType="int" resultType="double">
+        SELECT rating
+        FROM attractions
+        WHERE id = #{attractionId}
+    </select>
+
+    <select id = "getReviewCount" parameterType="int" resultType="int">
+        SELECT review_count AS reviewCount
+        FROM attractions
+        WHERE id = #{attractionId}
+    </select>
+
+    <update id="updateRating">
+        UPDATE attractions
+        SET rating = #{rating}
+        WHERE id = #{attractionId}
+    </update>
+
+    <update id="updateReviewCount">
+        UPDATE attractions
+        SET review_count = #{reviewCount}
+        WHERE id = #{attractionId}
+    </update>
     <!-- 정적 -->
 <!--	&lt;!&ndash; 관광지 불러오기 &ndash;&gt;-->
 <!--    <select id = "selectContentSidoGugun" parameterType="Bounds" resultType="Attraction">-->

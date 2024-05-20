@@ -3,9 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip97.modules.review.model.mapper.ReviewMapper">
 
-    <resultMap id="reviewResultMap" type="review">
+    <resultMap id="reviewResultMap" type="com.trip97.modules.review.model.Review">
+        <result column="id" property="id" />
         <result column="attraction_id" property="attractionId" />
         <result column="writer_id" property="writerId" />
+        <result column="writer_nickname" property="writerNickname" />
+        <result column="writer_profile_image" property="writerProfileImage" />
+        <result column="content" property="content" />
+        <result column="rating" property="rating" />
         <result column="created_at" property="createdAt" />
     </resultMap>
 
@@ -15,9 +20,11 @@
     </insert>
 
     <select id="selectAllReviewsByAttractionId" parameterType="int" resultMap="reviewResultMap">
-        SELECT `id`, `attraction_id`, `writer_id`, `content`, `rating`, `created_at`
-        FROM `reviews`
-        WHERE `attraction_id` = #{attractionId}
+        SELECT r.id, r.attraction_id, r.writer_id, m.nickname as writer_nickname, m.profile_image as writer_profile_image,
+               r.content, r.rating, r.created_at
+        FROM reviews r
+                 JOIN members m ON r.writer_id = m.id
+        WHERE r.attraction_id = #{attractionId}
     </select>
 
     <update id="updateReview" parameterType="review">
@@ -30,6 +37,5 @@
         DELETE FROM `reviews`
         WHERE `id` = #{id}
     </delete>
-
 
 </mapper>

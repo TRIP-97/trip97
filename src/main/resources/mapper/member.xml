@@ -12,6 +12,13 @@
         <result column="refresh_token" property="refreshToken" />
     </resultMap>
 
+    <resultMap id="profileImageDto" type="profileImageDto">
+        <result column="member_id" property="memberId"/>
+        <result column="save_folder" property="saveFolder"/>
+        <result column="original_file" property="originalFile"/>
+        <result column="save_file" property="saveFile"/>
+    </resultMap>
+
     <insert id="insertMember" parameterType="member">
         insert into members (email, nickname, oauth_provider, friend_code)
         values (#{email}, #{nickname}, #{oAuthProvider}, #{friendCode})
@@ -49,5 +56,22 @@
         set nickname = #{nickname}, profile_image = #{profileImage}, introduction = #{introduction}
         where id = #{id}
     </update>
+
+    <insert id="registerFile" parameterType="profileImageDto">
+        insert into member_file_info (member_id, save_folder, original_file, save_file, url)
+        values (#{memberId}, #{saveFolder}, #{originalFile}, #{saveFile}, #{url})
+    </insert>
+
+    <update id="updateFile" parameterType="profileImageDto">
+        update member_file_info
+        set save_folder = #{saveFolder}, original_file = #{originalFile}, save_file = #{saveFile}, url = #{url}
+        where member_id = #{memberId}
+    </update>
+
+    <select id="getFileInfo" parameterType="int" resultMap="profileImageDto">
+        select member_id, save_folder, original_file, save_file, url
+        from member_file_info
+        where member_id = #{memberId}
+    </select>
 
 </mapper>

@@ -18,7 +18,7 @@ public class Attraction {
     public int contentTypeId;
     public int sidoCode;
     public int gugunCode;
-    public int rating;
+    public double rating;
     public int reviewCount;
 
     public Attraction(String title, String address, double latitude, double longitude) {
@@ -41,7 +41,7 @@ public class Attraction {
     }
 
 	public Attraction(int id, String title, String overview, String address,String firstImage, double latitude, double longitude,
-			int contentTypeId, int sidoCode, int gugunCode, int rating, int reviewCount) {
+			int contentTypeId, int sidoCode, int gugunCode, double rating, int reviewCount) {
 		super();
 		this.id = id;
 		this.title = title;

@@ -16,13 +16,14 @@
     </insert>
 
     <!-- ID로 즐겨찾기 조회 -->
-    <select id="selectFavorite" parameterType="int" resultMap="favoriteResultMap">
+    <select id="selectFavorite" parameterType="favorite" resultMap="favoriteResultMap">
         SELECT
             f.id, f.member_id, f.attraction_id, f.created_at,
             a.title, a.overview, a.address, a.latitude, a.longitude, a.rating
         FROM favorites f JOIN attractions a
         ON f.attraction_id = a.id
-        WHERE f.id = #{id}
+        WHERE f.attraction_id = #{attractionId}
+        AND f.member_id = #{memberId}
     </select>
 
     <!-- 멤버 ID로 모든 즐겨찾기 조회 -->
@@ -36,9 +37,10 @@
     </select>
 
     <!-- ID로 즐겨찾기 삭제 -->
-    <delete id="deleteFavorite" parameterType="int">
+    <delete id="deleteFavorite" parameterType="favorite">
         DELETE FROM favorites
-        WHERE id = #{id}
+        WHERE attraction_id = #{attractionId}
+        AND member_id = #{memberId}
     </delete>
 
 </mapper>

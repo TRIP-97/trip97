@@ -19,7 +19,7 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @GetMapping
-    public ResponseEntity<?> selectFavorites(@RequestParam Integer memberId) {
+    public ResponseEntity<?> selectFavorites(@RequestParam("memberId") Integer memberId) {
         List<Favorite> list = favoriteService.getFavorites(memberId);
         if (list != null && !list.isEmpty()) {
             HttpHeaders headers = new HttpHeaders();
@@ -30,10 +30,18 @@ public class FavoriteController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> selectFavorite(@PathVariable Integer id) {
-        Favorite favorite = favoriteService.getFavorite(id);
-        if (favorite != null) {
+    @GetMapping("/attraction")
+    public ResponseEntity<?> selectFavorite(@RequestParam("attractionId") Integer attractionId,
+                                            @RequestParam("memberId") Integer memberId) {
+
+        Favorite favorite = Favorite.builder()
+                .attractionId(attractionId)
+                .memberId(memberId)
+                .build();
+
+        Favorite result = favoriteService.getFavorite(favorite);
+
+        if (result != null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
             return ResponseEntity.ok().headers(headers).body(favorite);
@@ -44,13 +52,27 @@ public class FavoriteController {
 
     @PostMapping
     public ResponseEntity<?> registerFavorite(@RequestBody Favorite favorite) {
-        favoriteService.registerFavorite(favorite);
-        return ResponseEntity.noContent().build();
+
+        Favorite result = favoriteService.getFavorite(favorite);
+
+        if (result != null) {
+            return ResponseEntity.noContent().build();
+        }else {
+            favoriteService.registerFavorite(favorite);
+            return ResponseEntity.noContent().build();
+        }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeFavorite(@PathVariable Integer id) {
-        favoriteService.removeFavorite(id);
+    @DeleteMapping()
+    public ResponseEntity<?> removeFavorite(@RequestParam("attractionId") Integer attractionId,
+                                            @RequestParam("memberId") Integer memberId) {
+
+        Favorite favorite = Favorite.builder()
+                .attractionId(attractionId)
+                .memberId(memberId)
+                .build();
+
+        favoriteService.removeFavorite(favorite);
         return ResponseEntity.noContent().build();
     }
 }

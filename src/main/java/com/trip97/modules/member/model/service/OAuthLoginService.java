@@ -5,23 +5,21 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.trip97.modules.member.model.ProfileImageDto;
-import com.trip97.modules.member.model.Role;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.trip97.modules.friendship.model.mapper.FriendshipMapper;
 import com.trip97.modules.member.model.Member;
+import com.trip97.modules.member.model.ProfileImageDto;
+import com.trip97.modules.member.model.Role;
 import com.trip97.modules.member.model.jwt.AuthTokens;
 import com.trip97.modules.member.model.jwt.AuthTokensGenerator;
 import com.trip97.modules.member.model.mapper.MemberMapper;
 import com.trip97.modules.member.model.oauth.OAuthInfoResponse;
 import com.trip97.modules.member.model.oauth.OAuthLoginParams;
 import com.trip97.modules.member.model.oauth.RequestOAuthInfoService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -47,7 +45,8 @@ public class OAuthLoginService {
         return authTokensGenerator.generate(memberId);
     }
 
-    private Integer findOrCreateMember(OAuthInfoResponse oAuthInfoResponse)  {
+    private Integer findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
+        System.out.println("들어옴 find");
         return memberMapper.selectMemberByEmail(oAuthInfoResponse.getEmail())
                 .map(Member::getId)
                 .orElseGet(() -> {
@@ -60,16 +59,17 @@ public class OAuthLoginService {
     }
 
     private int newMember(OAuthInfoResponse oAuthInfoResponse) throws IOException {
-    	String randomFriendCode = makeFriendCode();
-    	
-    	Member member = Member.builder()
+        System.out.println("들어옴 회원가입");
+        String randomFriendCode = makeFriendCode();
+
+        Member member = Member.builder()
                 .email(oAuthInfoResponse.getEmail())
                 .nickname(oAuthInfoResponse.getNickname())
                 .oAuthProvider(oAuthInfoResponse.getOAuthProvider())
                 .friendCode(randomFriendCode)
                 .role(Role.USER)
                 .build();
-    	memberMapper.insertMember(member);
+        memberMapper.insertMember(member);
         ProfileImageDto profileImageDto = processImageFiles(member);
         memberMapper.registerFile(profileImageDto);
 
@@ -107,13 +107,12 @@ public class OAuthLoginService {
     }
 
     private String makeFriendCode() {
-    	while (true) {
-    		String randomCode = RandomStringUtils.random(10, true, true);
-    		if (friendshipMapper.findCode(randomCode) == null) {
-    			log.debug("result: {}", friendshipMapper.findCode(randomCode));
-    			return randomCode;
-    		}
-    	}
+        while (true) {
+            String randomCode = RandomStringUtils.random(10, true, true);
+            if (friendshipMapper.findCode(randomCode) == null) {
+                log.debug("result: {}", friendshipMapper.findCode(randomCode));
+                return randomCode;
+            }
+        }
     }
-    
 }

@@ -1,18 +1,21 @@
 package com.trip97.modules.board.model;
 
-import com.trip97.modules.board.model.file.UploadImage;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class Board {
 	
 	private int id; // 게시판 아이디
-	private int writerId; // 작성자 아이디 (OAuth 연결 전)
+	private int writerId; // 작성자 아이디
 	private String title; // 제목
 	private String content; // 내용
 	private Date createdAt; // 작성 날짜
@@ -20,9 +23,14 @@ public class Board {
 	private int likeCount; // 좋아요 수
 	private String writerNickname; // 작성자 닉네임
 	private String profileImage; // 작성자 프로필 사진
-	private List<UploadImage> imageFiles;
 
-	public Board(int writerId, String title, String content, String writerNickname) {
+	public Board(){}
+
+	@JsonCreator
+	public Board(@JsonProperty("writerId") int writerId,
+				 @JsonProperty("title") String title,
+				 @JsonProperty("content") String content,
+				 @JsonProperty("writerNickname") String writerNickname) {
 		this.writerId = writerId;
 		this.title = title;
 		this.content = content;
@@ -48,16 +56,6 @@ public class Board {
 		this.viewCount = viewCount;
 		this.likeCount = likeCount;
 	}
-
-	public void setId(int id) {
-		this.id=id;
-	}
-
-	public void setImageFiles(List<UploadImage> imageFiles) {
-		this.imageFiles = imageFiles;
-	}
-
-
 
 
 }

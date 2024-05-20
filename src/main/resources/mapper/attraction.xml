@@ -42,6 +42,12 @@
         <include refid="content"></include>
     </select>
 
+    <select id = "selectAttractionById" parameterType="int" resultType="Attraction">
+        SELECT *
+        FROM attractions
+        WHERE id = #{attractionId}
+    </select>
+
 	<!-- 드롭다운 불러오기 -->
     <select id = "selectTypeContent" resultType="AttractionContent">
         SELECT *
@@ -118,10 +124,5 @@
 <!--        <include refid="search"></include>-->
 <!--    </select>-->
 
-<!--    <select id = "selectAttractionById" parameterType="int" resultType="Attraction">-->
-<!--        SELECT *-->
-<!--        FROM attractions-->
-<!--        WHERE id = #{attractionId}-->
-<!--    </select>-->
 
 </mapper>

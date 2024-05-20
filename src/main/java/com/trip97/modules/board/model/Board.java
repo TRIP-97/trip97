@@ -1,11 +1,16 @@
 package com.trip97.modules.board.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class Board {
 	
@@ -19,7 +24,13 @@ public class Board {
 	private String writerNickname; // 작성자 닉네임
 	private String profileImage; // 작성자 프로필 사진
 
-	public Board(int writerId, String title, String content, String writerNickname) {
+	public Board(){}
+
+	@JsonCreator
+	public Board(@JsonProperty("writerId") int writerId,
+				 @JsonProperty("title") String title,
+				 @JsonProperty("content") String content,
+				 @JsonProperty("writerNickname") String writerNickname) {
 		this.writerId = writerId;
 		this.title = title;
 		this.content = content;
@@ -45,12 +56,6 @@ public class Board {
 		this.viewCount = viewCount;
 		this.likeCount = likeCount;
 	}
-
-	public void setId(int id) {
-		this.id=id;
-	}
-
-
 
 
 }

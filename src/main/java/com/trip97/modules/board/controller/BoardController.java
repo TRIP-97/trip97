@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -42,6 +43,8 @@ public class BoardController {
 	
 	@PostMapping
 	public ResponseEntity<Integer> writeBoard(@RequestBody Board board) throws Exception{
+		System.out.println("들어옴 ????");
+
 		int BoardId = service.writeBoard(board);
 		return ResponseEntity.ok(BoardId);
 	}

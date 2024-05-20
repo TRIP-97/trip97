@@ -19,6 +19,11 @@ public class MemberServiceImpl implements  MemberService {
     }
 
     @Override
+    public Optional<Member> getMemberByFriendCode(String friendCode) {
+        return memberMapper.selectMemberByFriendCode(friendCode);
+    }
+
+    @Override
     public Integer editMember(Integer memberId, Member member) {
         Member updateMember = Member.builder()
                 .id(memberId)

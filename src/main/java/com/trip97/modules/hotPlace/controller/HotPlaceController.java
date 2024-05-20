@@ -4,11 +4,9 @@ import com.trip97.modules.hotPlace.model.FileInfoDto;
 import com.trip97.modules.hotPlace.model.HotPlace;
 import com.trip97.modules.hotPlace.model.HotPlaceListDto;
 import com.trip97.modules.hotPlace.model.service.HotPlaceService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -62,8 +60,7 @@ public class HotPlaceController {
     }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> registerHotPlace(@RequestPart("hotPlace") HotPlace hotPlace, @RequestPart(value = "upfile", required = false) MultipartFile[] files, HttpServletRequest request) throws IOException {
-        String contentType = request.getContentType();
+    public ResponseEntity<?> registerHotPlace(@RequestPart("hotPlace") HotPlace hotPlace, @RequestPart(value = "upfile", required = false) MultipartFile[] files) throws IOException {
         processImageFiles(hotPlace, files);
 
         hotPlaceService.registerHotPlace(hotPlace);
@@ -140,40 +137,6 @@ public class HotPlaceController {
         }
         return null;
     }
-
-
-    /*private void processImageFiles(HotPlace hotPlace, MultipartFile[] files) throws IOException {
-        if (!files[0].isEmpty()) {
-            String today = new SimpleDateFormat("yyMMdd").format(new Date());
-            String saveFolder = uploadPath + File.separator + today;
-            log.info("저장 폴더 : {}", saveFolder);
-            File folder = new File(saveFolder);
-
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
-
-            List<FileInfoDto> fileInfos = new ArrayList<>();
-            for (MultipartFile mfile : files) {
-                FileInfoDto fileInfoDto = new FileInfoDto();
-                String originalFileName = mfile.getOriginalFilename();
-
-                if (!originalFileName.isEmpty()) {
-                    String saveFileName = UUID.randomUUID().toString()
-                            + originalFileName.substring(originalFileName.lastIndexOf('.'));
-                    String url = localDomain + "/images/" + today + "/" + saveFileName;
-                    fileInfoDto.setSaveFolder(today);
-                    fileInfoDto.setOriginalFile(originalFileName);
-                    fileInfoDto.setSaveFile(saveFileName);
-                    fileInfoDto.setUrl(url);
-                    log.info("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", mfile.getOriginalFilename(), saveFileName);
-                    mfile.transferTo(new File(folder, saveFileName));
-                }
-                fileInfos.add(fileInfoDto);
-            }
-            hotPlace.setFileInfos(fileInfos);
-        }
-    }*/
 
     @PutMapping("{id}")
     public ResponseEntity<?> updateHotPlace(@PathVariable int id, @RequestBody HotPlace hotPlace) {

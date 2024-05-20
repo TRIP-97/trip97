@@ -1,6 +1,5 @@
 package com.trip97.modules.hotPlace.model.service;
 
-import com.trip97.infra.util.SecurityUtils;
 import com.trip97.modules.hotPlace.model.FileInfoDto;
 import com.trip97.modules.hotPlace.model.HotPlace;
 import com.trip97.modules.hotPlace.model.HotPlaceListDto;
@@ -53,8 +52,6 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
         String key = map.get("key");
         param.put("key", key == null ? "" : key);
-        if ("member_nickname".equals(key))
-            param.put("key", key == null ? "" : "m.nickname");
 
         List<HotPlace> list = new ArrayList<>();
         String filter = map.get("filter");

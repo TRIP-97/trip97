@@ -1,10 +1,12 @@
 package com.trip97.modules.groupMember.model;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@Builder
+@Setter
+@NoArgsConstructor
 public class GroupMember {
 
     private Integer id;
@@ -13,5 +15,11 @@ public class GroupMember {
     private GroupMemberStatus status;
     private String memberNickname;
     private String memberProfileImage;
+    private String memberIntroduction;
 
+    public GroupMember(Integer groupId, Integer memberId, GroupMemberStatus status) {
+        this.groupId = groupId;
+        this.memberId = memberId;
+        this.status = status;
+    }
 }

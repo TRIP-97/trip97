@@ -13,6 +13,7 @@ public interface MemberMapper {
     Integer insertMember(Member member);
     Optional<Member> selectMemberByEmail(String email);
     Optional<Member> selectMemberById(int id);
+    Optional<Member> selectMemberByFriendCode(String friendCode);
     Optional<Member> selectMemberByRefreshToken(String refreshToken);
     Integer updateMember(Member member);
 }

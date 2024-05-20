@@ -3,35 +3,126 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip97.modules.group.model.mapper.GroupMapper">
 
-    <resultMap id="group" type="group">
+    <resultMap id="groupMap" type="group">
         <result column="creator_id" property="creatorId"/>
+        <result column="nickname" property="creatorNickname"/>
+	    <result column="profile_image" property="creatorProfileImage"/>
+	    <result column="introduction" property="creatorIntroduction"/>
         <result column="max_member_count" property="maxMemberCount"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="created_date" property="createdDate"/>
+    </resultMap>
+    
+    <resultMap type="group" id="viewGroup" extends="groupMap">
+        <collection property="fileInfos" column="group_id" javaType="list" ofType="groupFileInfoDto" select="fileInfoList"/>
+    </resultMap>
+
+    <resultMap type="groupFileInfoDto" id="file">
+        <result column="save_folder" property="saveFolder"/>
+        <result column="original_file" property="originalFile"/>
+        <result column="save_file" property="saveFile"/>
     </resultMap>
 
     <insert id="insertGroup" parameterType="group">
-        insert into travel_groups (creator_id, name, overview, max_member_count)
-        values (#{creatorId}, #{name}, #{overview}, #{maxMemberCount})
+        insert into travel_groups (creator_id, name, overview, max_member_count, location, start_date, end_date)
+        values (#{creatorId}, #{name}, #{overview}, #{maxMemberCount}, #{location}, #{startDate}, #{endDate})
         <selectKey resultType="int" keyProperty="id" order="AFTER">
             select last_insert_id()
         </selectKey>
     </insert>
+    
+    <insert id="registerFile" parameterType="group">
+        insert into travel_group_file_info (group_id, save_folder, original_file, save_file, url)
+        values
+        <foreach collection="fileInfos" item="fileinfo" separator=" , ">
+            (#{id}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile}, #{fileinfo.url})
+        </foreach>
+    </insert>
+    
+    <sql id="search">
+        <if test="word != null and word != ''">
+            <if test="key == 'name'">
+                and g.name like concat('%', #{word}, '%')
+            </if>
+            <if test="key == 'member_nickname'">
+                and m.nickname = #{word}
+            </if>
+            <if test="key == 'overview'">
+                and g.overview like concat('%', #{word}, '%')
+            </if>
+            <if test="key == 'location'">
+                and g.location like concat('%', #{word}, '%')
+            </if>
+        </if>
+    </sql>
 
-    <select id="selectGroupsByMemberId" parameterType="int" resultMap="group">
-        select g.id, g.creator_id, g.name, g.overview, g.max_member_count
-        from travel_groups g join group_members gm
-        on g.id = gm.group_id
-        where gm.member_id = #{memberId}
+    <select id="selectGroups" parameterType="map" resultMap="groupMap">
+        SELECT g.id, g.creator_id, m.nickname, m.profile_image, m.introduction,
+        g.name, g.overview, g.max_member_count, g.location, g.start_date, g.end_date, g.created_date,
+        COALESCE(acceptedMembers.member_count, 0) AS currentMemberCount
+        FROM travel_groups g
+        JOIN members m ON g.creator_id = m.id
+        LEFT JOIN (
+        SELECT group_id, COUNT(*) AS member_count
+        FROM group_members
+        WHERE status = 'ACCEPT'
+        GROUP BY group_id
+        ) acceptedMembers ON acceptedMembers.group_id = g.id
+        <include refid="search"></include>
+        ORDER BY g.id DESC
+        LIMIT #{start}, #{listsize};
     </select>
 
-    <select id="selectGroupById" parameterType="int" resultMap="group">
-        select id, creator_id, name, overview, max_member_count
-        from travel_groups
-        where id = #{groupId}
+
+    <select id="selectGroupsByMemberId" parameterType="map" resultMap="groupMap">
+        SELECT g.id, g.creator_id, m.nickname, m.profile_image, m.introduction,
+               g.name, g.overview, g.max_member_count, g.location, g.start_date, g.end_date, g.created_date,
+               COALESCE(acceptedMembers.member_count, 0) AS currentMemberCount
+        FROM travel_groups g
+                 JOIN group_members gm ON g.id = gm.group_id
+                 JOIN members m ON g.creator_id = m.id
+                 LEFT JOIN (
+            SELECT group_id, COUNT(*) AS member_count
+            FROM group_members
+            WHERE status = 'ACCEPT'
+            GROUP BY group_id
+        ) acceptedMembers ON acceptedMembers.group_id = g.id
+        WHERE gm.member_id = #{memberId} AND gm.status = 'ACCEPT'
+        ORDER BY g.id DESC
+            LIMIT #{start}, #{listsize};
     </select>
+
+
+    <select id="getTotalGroupCount" parameterType="map" resultType="int">
+        SELECT count(g.id)
+        FROM travel_groups g
+        JOIN members m ON g.creator_id = m.id
+        <where>
+            <include refid="search"/>
+        </where>
+    </select>
+
+    <select id="selectGroupById" parameterType="int" resultMap="groupMap">
+        SELECT g.id, g.creator_id, m.nickname, m.profile_image, m.introduction,
+               g.name, g.overview, g.max_member_count, g.location, g.start_date, g.end_date, g.created_date,
+               COALESCE(acceptedMembers.member_count, 0) AS currentMemberCount
+        FROM travel_groups g
+                 JOIN members m ON g.creator_id = m.id
+                 LEFT JOIN (
+            SELECT group_id, COUNT(*) AS member_count
+            FROM group_members
+            WHERE status = 'ACCEPT'
+            GROUP BY group_id
+        ) acceptedMembers ON acceptedMembers.group_id = g.id
+        WHERE g.id = #{groupId}
+    </select>
+
 
     <update id="updateGroup" parameterType="group">
         update travel_groups
-        set name = #{name}, overview = #{overview}, max_member_count = #{maxMemberCount}
+        set name = #{name}, overview = #{overview}, max_member_count = #{maxMemberCount},
+        	location = #{location}, start_date = #{startDate}, end_date = #{endDate}
         where id = #{id}
     </update>
 
@@ -41,4 +132,17 @@
         where id = #{groupId}
     </delete>
 
+	<select id="fileInfoList" parameterType="int" resultMap="file">
+        select save_folder, original_file, save_file, url
+        from travel_group_file_info
+        where group_id = #{groupId}
+    </select>
+
+    <select id="getFileInfo" parameterType="int" resultMap="file">
+        select save_folder, original_file, save_file, url
+        from travel_group_file_info
+        where group_id = #{groupId}
+        limit 1;
+    </select>
+    
 </mapper>

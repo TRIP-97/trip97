@@ -8,6 +8,7 @@ import com.trip97.modules.attraction.model.Sido;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AttractionMapper {
@@ -33,4 +34,8 @@ public interface AttractionMapper {
     // 관광지 상세 정보
     Attraction selectAttractionById(int attractionId);
 
+    Double getRating(int attractionId);
+    Integer getReviewCount(int attractionId);
+    Integer updateRating(double rating, int attractionId);
+    Integer updateReviewCount(int reviewCount, int attractionId);
 }

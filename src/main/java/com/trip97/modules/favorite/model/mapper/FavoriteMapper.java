@@ -9,8 +9,8 @@ import java.util.List;
 public interface FavoriteMapper {
 
     Integer insertFavorite(Favorite favorite);
-    Favorite selectFavorite(Integer id);
+    Favorite selectFavorite(Favorite favorite);
     List<Favorite> selectFavorites(Integer memberId);
-    Integer deleteFavorite(Integer id);
+    Integer deleteFavorite(Favorite favorite);
 
 }

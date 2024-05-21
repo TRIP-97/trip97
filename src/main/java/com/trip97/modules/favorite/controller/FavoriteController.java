@@ -34,10 +34,9 @@ public class FavoriteController {
     public ResponseEntity<?> selectFavorite(@RequestParam("attractionId") Integer attractionId,
                                             @RequestParam("memberId") Integer memberId) {
 
-        Favorite favorite = Favorite.builder()
-                .attractionId(attractionId)
-                .memberId(memberId)
-                .build();
+        Favorite favorite = new Favorite();
+        favorite.setAttractionId(attractionId);
+        favorite.setMemberId(memberId);
 
         Favorite result = favoriteService.getFavorite(favorite);
 
@@ -67,10 +66,9 @@ public class FavoriteController {
     public ResponseEntity<?> removeFavorite(@RequestParam("attractionId") Integer attractionId,
                                             @RequestParam("memberId") Integer memberId) {
 
-        Favorite favorite = Favorite.builder()
-                .attractionId(attractionId)
-                .memberId(memberId)
-                .build();
+        Favorite favorite = new Favorite();
+        favorite.setAttractionId(attractionId);
+        favorite.setMemberId(memberId);
 
         favoriteService.removeFavorite(favorite);
         return ResponseEntity.noContent().build();

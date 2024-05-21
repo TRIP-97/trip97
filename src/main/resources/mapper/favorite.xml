@@ -19,7 +19,8 @@
     <select id="selectFavorite" parameterType="favorite" resultMap="favoriteResultMap">
         SELECT
             f.id, f.member_id, f.attraction_id, f.created_at,
-            a.title, a.overview, a.address, a.latitude, a.longitude, a.rating
+            a.title, a.overview, a.address, a.first_image AS firstImage, a.content_type_id AS contentTypeId,
+            a.latitude, a.longitude, a.rating
         FROM favorites f JOIN attractions a
         ON f.attraction_id = a.id
         WHERE f.attraction_id = #{attractionId}
@@ -30,7 +31,8 @@
     <select id="selectFavorites" parameterType="int" resultMap="favoriteResultMap">
         SELECT
             f.id, f.member_id, f.attraction_id, f.created_at,
-            a.title, a.overview, a.address, a.latitude, a.longitude, a.rating
+            a.title, a.overview, a.address, a.first_image AS firstImage, a.content_type_id AS contentTypeId,
+            a.latitude, a.longitude, a.rating
         FROM favorites f JOIN attractions a
         ON f.attraction_id = a.id
         WHERE f.member_id = #{memberId}

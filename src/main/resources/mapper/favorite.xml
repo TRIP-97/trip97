@@ -11,14 +11,14 @@
 
     <sql id="search">
         <if test="word != null and word != ''">
-            <if test="key == 'title">
-                and f.title like concat('%', #{word}, '%')
+            <if test="key == 'title'">
+                and a.title like concat('%', #{word}, '%')
             </if>
-            <if test="key == 'content">
-                and f.content like concat('%', #{word}, '%')
+            <if test="key == 'content'">
+                and a.overview like concat('%', #{word}, '%')
             </if>
-            <if test="key == 'location">
-                and f.location like concat('%', #{word}, '%')
+            <if test="key == 'location'">
+                and a.address like concat('%', #{word}, '%')
             </if>
         </if>
     </sql>
@@ -67,7 +67,7 @@
     <!-- 오래된 순으로 조회 -->
     <select id="selectFavoritesOld" resultMap="favoriteResultMap">
         SELECT
-        f.id, f.member_id, <f class="attrac"></f>tion_id, f.created_at,
+        f.id, f.member_id, f.attraction_id, f.created_at,
         a.title, a.overview, a.address, a.first_image, a.latitude, a.longitude, a.rating
         FROM favorites f
         JOIN attractions a ON f.attraction_id = a.id
@@ -89,6 +89,7 @@
         SELECT count(f.id)
         FROM favorites f
         JOIN members m ON f.member_id = m.id
+        JOIN attractions a ON f.attraction_id = a.id
         WHERE f.member_id = #{id}
             <include refid="search"/>
     </select>

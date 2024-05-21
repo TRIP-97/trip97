@@ -22,6 +22,7 @@ public class FavoriteController {
 
     @GetMapping
     public ResponseEntity<?> selectFavorites(@RequestParam Map<String, String> map) {
+        System.out.println("검색어는?"+map.get("word"));
         FavoriteListDto favoriteList = favoriteService.getFavorites(map);
         if (favoriteList != null) {
             HttpHeaders headers = new HttpHeaders();

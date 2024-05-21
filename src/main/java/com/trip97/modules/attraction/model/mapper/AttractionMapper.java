@@ -25,6 +25,7 @@ public interface AttractionMapper {
 
     // 관광지 불러오기
     List<Attraction> selectAttraction(Bounds bound);
+    List<Attraction> selectHotAttractions();
 
     // 드롭다운 불러오기
     List<AttractionContent> selectTypeContent();

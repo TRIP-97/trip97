@@ -3,6 +3,7 @@ package com.trip97.modules.attraction.model.service;
 import com.trip97.modules.attraction.model.Attraction;
 import com.trip97.modules.attraction.model.Bounds;
 import com.trip97.modules.attraction.model.Gugun;
+import org.w3c.dom.Attr;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ public interface AttractionService {
 //    public List<Attraction> getAttractions(Bounds bound);
 
     public List<Attraction> getAttractions(Bounds bound);
+    List<Attraction> getHotAttractions();
 
     public Attraction getAttractionById(int attractionId);
 

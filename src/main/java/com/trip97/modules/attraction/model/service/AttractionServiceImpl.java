@@ -36,6 +36,10 @@ public class AttractionServiceImpl implements AttractionService {
         return mapper.selectAttraction(bound);
     }
 
+    @Override
+    public List<Attraction> getHotAttractions() {
+        return mapper.selectHotAttractions();
+    }
 
 //    @Override
 //    public List<Attraction> getAttractionContentSidoGugun(Bounds bound) {

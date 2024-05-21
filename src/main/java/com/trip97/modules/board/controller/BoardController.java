@@ -4,13 +4,16 @@ import com.trip97.modules.board.model.Board;
 import com.trip97.modules.board.model.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -98,5 +101,15 @@ public class BoardController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	
+	@GetMapping("/hot")
+	public ResponseEntity<?> getHotBoards() throws Exception{
+		List<Board> list = service.getHotBoards();
+		if (list != null && !list.isEmpty()) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+			return ResponseEntity.ok().headers(headers).body(list);
+		} else {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}
+	}
 }

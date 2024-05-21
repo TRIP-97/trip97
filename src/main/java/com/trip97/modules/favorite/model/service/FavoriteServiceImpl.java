@@ -19,8 +19,8 @@ public class FavoriteServiceImpl implements FavoriteService{
     }
 
     @Override
-    public Favorite getFavorite(Integer id) {
-        return favoriteMapper.selectFavorite(id);
+    public Favorite getFavorite(Favorite favorite) {
+        return favoriteMapper.selectFavorite(favorite);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class FavoriteServiceImpl implements FavoriteService{
     }
 
     @Override
-    public Integer removeFavorite(Integer id) {
-        return favoriteMapper.deleteFavorite(id);
+    public Integer removeFavorite(Favorite favorite) {
+        return favoriteMapper.deleteFavorite(favorite);
     }
 }

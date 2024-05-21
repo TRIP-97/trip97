@@ -2,6 +2,7 @@ package com.trip97.modules.favorite.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 

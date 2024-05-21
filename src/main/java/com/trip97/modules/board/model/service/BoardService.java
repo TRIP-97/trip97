@@ -13,5 +13,5 @@ public interface BoardService {
 	void editBoard(Board board) throws Exception;
 	void removeBoard(int no) throws Exception;
 	void editBoardLike(int no) throws Exception;
-
+	List<Board> getHotBoards() throws Exception;
 }

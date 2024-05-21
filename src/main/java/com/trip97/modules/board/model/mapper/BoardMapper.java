@@ -30,5 +30,8 @@ public interface BoardMapper {
 	
 	// 게시물 좋아요 수 업데이트
 	void updateBoardLike(int no) throws SQLException;
+
+	// 인기 게시글 조회
+	List<Board> selectHotBoard() throws SQLException;
 	
 }

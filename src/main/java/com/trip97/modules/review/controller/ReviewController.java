@@ -24,7 +24,9 @@ public class ReviewController {
     public ResponseEntity<?> getReviews(@PathVariable Integer attractionId) {
         List<Review> list = reviewService.getReviews(attractionId);
         if (list != null && !list.isEmpty()) {
-            return getListResponseEntity(list);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+            return ResponseEntity.ok().headers(headers).body(list);
         } else {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }

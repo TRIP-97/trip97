@@ -5,7 +5,9 @@ import com.trip97.modules.attraction.model.Bounds;
 import com.trip97.modules.attraction.model.Gugun;
 import com.trip97.modules.attraction.model.service.AttractionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -71,5 +74,15 @@ public class AttractionController {
         return new ResponseEntity<Attraction>(service.getAttractionById(attractionId),HttpStatus.OK);
     }
 
-
+    @GetMapping("/hot")
+    public ResponseEntity<?> getHotAttractions() {
+        List<Attraction> list = service.getHotAttractions();
+        if (list != null && !list.isEmpty()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+            return ResponseEntity.ok().headers(headers).body(list);
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+    }
 }

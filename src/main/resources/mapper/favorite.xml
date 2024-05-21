@@ -9,6 +9,20 @@
         <result column="created_at" property="createdAt" />
     </resultMap>
 
+    <sql id="search">
+        <if test="word != null and word != ''">
+            <if test="key == 'title">
+                and f.title like concat('%', #{word}, '%')
+            </if>
+            <if test="key == 'content">
+                and f.content like concat('%', #{word}, '%')
+            </if>
+            <if test="key == 'location">
+                and f.location like concat('%', #{word}, '%')
+            </if>
+        </if>
+    </sql>
+
     <!-- 즐겨찾기 추가 -->
     <insert id="insertFavorite" parameterType="favorite">
         INSERT INTO favorites (member_id, attraction_id)
@@ -20,8 +34,8 @@
         SELECT
             f.id, f.member_id, f.attraction_id, f.created_at,
             a.title, a.overview, a.address, a.latitude, a.longitude, a.rating
-        FROM favorites f JOIN attractions a
-        ON f.attraction_id = a.id
+        FROM favorites f
+        JOIN attractions a ON f.attraction_id = a.id
         WHERE f.attraction_id = #{attractionId}
         AND f.member_id = #{memberId}
     </select>
@@ -30,10 +44,37 @@
     <select id="selectFavorites" parameterType="int" resultMap="favoriteResultMap">
         SELECT
             f.id, f.member_id, f.attraction_id, f.created_at,
-            a.title, a.overview, a.address, a.latitude, a.longitude, a.rating
-        FROM favorites f JOIN attractions a
-        ON f.attraction_id = a.id
-        WHERE f.member_id = #{memberId}
+            a.title, a.overview, a.address, a.first_image, a.latitude, a.longitude, a.rating
+        FROM favorites f
+        JOIN attractions a ON f.attraction_id = a.id
+        WHERE f.member_id = #{id}
+        <include refid="search"/>
+    </select>
+
+    <!-- 최신 순으로 조회 -->
+    <select id="selectFavoritesNew" resultMap="favoriteResultMap">
+        SELECT
+        f.id, f.member_id, f.attraction_id, f.created_at,
+        a.title, a.overview, a.address, a.first_image, a.latitude, a.longitude, a.rating
+        FROM favorites f
+        JOIN attractions a ON f.attraction_id = a.id
+        WHERE f.member_id = #{id}
+        <include refid="search"></include>
+        ORDER BY f.id DESC
+        LIMIT #{start}, #{listsize};
+    </select>
+
+    <!-- 오래된 순으로 조회 -->
+    <select id="selectFavoritesOld" resultMap="favoriteResultMap">
+        SELECT
+        f.id, f.member_id, <f class="attrac"></f>tion_id, f.created_at,
+        a.title, a.overview, a.address, a.first_image, a.latitude, a.longitude, a.rating
+        FROM favorites f
+        JOIN attractions a ON f.attraction_id = a.id
+        WHERE f.member_id = #{id}
+        <include refid="search"></include>
+        ORDER BY f.id ASC
+        LIMIT #{start}, #{listsize};
     </select>
 
     <!-- ID로 즐겨찾기 삭제 -->
@@ -42,5 +83,14 @@
         WHERE attraction_id = #{attractionId}
         AND member_id = #{memberId}
     </delete>
+
+    <!-- -->
+    <select id="getTotalFavoriteCount" parameterType="map" resultType="int">
+        SELECT count(f.id)
+        FROM favorites f
+        JOIN members m ON f.member_id = m.id
+        WHERE f.member_id = #{id}
+            <include refid="search"/>
+    </select>
 
 </mapper>

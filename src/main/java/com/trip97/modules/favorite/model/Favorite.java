@@ -17,6 +17,7 @@ public class Favorite {
     private String title;
     private String overview;
     private String address;
+    private String first_image;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private Integer rating;

@@ -52,5 +52,8 @@ public class BoardServiceImpl implements BoardService{
 		mapper.updateBoardLike(no);
 	}
 
-	
+	@Override
+	public List<Board> getHotBoards() throws Exception {
+		return mapper.selectHotBoard();
+	}
 }

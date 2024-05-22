@@ -33,6 +33,18 @@ public class FavoriteController {
         }
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<?> getFavoritesByMemberId(Integer memberId) {
+        List<Favorite> list = favoriteService.getFavoritesByMemberId(memberId);
+        if (list != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+            return ResponseEntity.ok().headers(headers).body(list);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
     @GetMapping("/attraction")
     public ResponseEntity<?> selectFavorite(@RequestParam("attractionId") Integer attractionId,
                                             @RequestParam("memberId") Integer memberId) {

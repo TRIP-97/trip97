@@ -49,7 +49,6 @@
         FROM favorites f
         JOIN attractions a ON f.attraction_id = a.id
         WHERE f.member_id = #{id}
-        <include refid="search"/>
     </select>
 
     <!-- 최신 순으로 조회 -->

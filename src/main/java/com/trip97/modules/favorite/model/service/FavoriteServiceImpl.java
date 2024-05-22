@@ -69,6 +69,11 @@ public class FavoriteServiceImpl implements FavoriteService{
     }
 
     @Override
+    public List<Favorite> getFavoritesByMemberId(Integer memberId) {
+        return favoriteMapper.selectFavorites(memberId);
+    }
+
+    @Override
     public Integer removeFavorite(Favorite favorite) {
         return favoriteMapper.deleteFavorite(favorite);
     }

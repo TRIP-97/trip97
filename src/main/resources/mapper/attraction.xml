@@ -43,7 +43,7 @@
     </select>
 
     <!-- 인기 관광지 불러오기 -->
-`   <select id="selectHotAttractions" resultType="Attraction">
+   <select id="selectHotAttractions" resultType="Attraction">
         SELECT *
         FROM `attractions`
         WHERE `rating` >= 4

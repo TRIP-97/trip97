@@ -1,7 +1,11 @@
 package com.trip97.modules.board.model.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.trip97.modules.board.model.BoardListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +19,44 @@ public class BoardServiceImpl implements BoardService{
 	private BoardMapper mapper;
 	
 	@Override
-	public List<Board> getBoards() throws Exception {
-		List<Board> boards = mapper.selectBoards();
-		return boards;
+	public BoardListDto getBoards(Map<String, String> map) throws Exception {
+
+		Map<String, Object> param = new HashMap<>();
+
+		int currentPage = Integer.parseInt(map.get("pgno")==null? "1" : map.get("pgno"));
+		int sizePerPage = Integer.parseInt(map.get("spp")==null? "10" : map.get("spp"));
+		int start = currentPage * sizePerPage - sizePerPage;
+
+		param.put("start", start);
+		param.put("listsize", sizePerPage);
+
+
+		String key = map.get("key");
+		param.put("key", key==null ? "" : key);
+
+		String word = map.get("word");
+		param.put("word", word==null ? "" : word);
+
+		String filter = map.get("filter");
+
+		List<Board> list = new ArrayList<>();
+
+		if(filter.equals("")||filter.equals("newest")){
+			list = mapper.selectBoardsNew(param);
+		}else if(filter.equals("oldest")){
+			list = mapper.selectBoardsOld(param);
+		}
+
+		int totalArticleCount = mapper.getTotalBoardCount(param);
+		int totalPageCount = (totalArticleCount-1)/sizePerPage+1;
+
+		BoardListDto boardListDto = new BoardListDto();
+		boardListDto.setList(list);
+		boardListDto.setCurrentPage(currentPage);
+		boardListDto.setTotalPageCount(totalPageCount);
+
+
+		return boardListDto;
 	}
 
 	@Override
@@ -39,7 +78,14 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public void editBoard(Board board) throws Exception {
-		mapper.updateBoard(board);
+
+		Map<String, Object> param = new HashMap<>();
+
+		param.put("title",board.getTitle());
+		param.put("content",board.getContent());
+		param.put("id",board.getId());
+
+		mapper.updateBoard(param);
 	}
 
 	@Override

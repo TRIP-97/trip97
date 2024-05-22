@@ -1,6 +1,7 @@
 package com.trip97.modules.board.controller;
 
 import com.trip97.modules.board.model.Board;
+import com.trip97.modules.board.model.BoardListDto;
 import com.trip97.modules.board.model.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,12 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -33,9 +37,10 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
-	@GetMapping()
-	public ResponseEntity<List<Board>> getBoards() throws Exception{
-		return new ResponseEntity<List<Board>>(service.getBoards(),HttpStatus.OK);
+	@GetMapping
+	public ResponseEntity<BoardListDto> getBoards(@RequestParam Map<String, String> map) throws Exception{
+		BoardListDto boards = service.getBoards(map);
+		return new ResponseEntity<BoardListDto>(boards,HttpStatus.OK);
 	}
 	
 	@GetMapping("{no}")
@@ -55,42 +60,38 @@ public class BoardController {
 	@PostMapping("/upload")
 	public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
 
+		System.out.println("저장되고있는거임?");
+
 		if (file == null || file.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Empty or null file");
 		}
 
 		try {
 			String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-			Files.copy(file.getInputStream(), Paths.get(uploadPath, fileName));
+			String folder = "C:/trip97/board/";
+			File directory = new File(folder);
+			if (!directory.exists()) {
+				directory.mkdirs(); // 폴더가 존재하지 않으면 생성
+			}
 
-			String fileUrl = "/uploads/" + fileName;
-			return ResponseEntity.ok(new UploadResponse(fileUrl));
+			file.transferTo(new File(folder, fileName));
+
+			System.out.println("폴더"+folder);
+			System.out.println("파일이름"+fileName);
+
+			String fileUrl = "http://localhost:8080"+"/images/board/" + fileName;
+
+			System.out.println(fileUrl);
+			return ResponseEntity.ok(fileUrl);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
 		}
 	}
-
-	static class UploadResponse {
-		private String fileUrl;
-
-		public UploadResponse(String fileUrl) {
-			this.fileUrl = fileUrl;
-		}
-
-		public String getFileUrl() {
-			return fileUrl;
-		}
-
-		public void setFileUrl(String fileUrl) {
-			this.fileUrl = fileUrl;
-		}
-	}
 	
 	@PutMapping("{no}")
-	public ResponseEntity<Void> editBoard(@PathVariable("no") int no,@RequestBody Board board) throws Exception{
-		board.setId(no);
+	public ResponseEntity<Void> editBoard(@RequestBody Board board) throws Exception{
 		service.editBoard(board);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

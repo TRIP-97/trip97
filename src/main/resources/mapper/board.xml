@@ -49,9 +49,10 @@
 	
 	<!-- 게시물 조회 -->
 	<select id = "selectBoardByNo" parameterType = "int" resultType = "Board">
-		SELECT b.id, b.writer_id b.title, b.content, b.created_at, b.view_count, b.like_count, b.writer_nickname
+		SELECT b.id, b.writer_id, b.title, b.content, b.created_at, b.view_count, b.like_count, b.writer_nickname, m.profile_image as profileImage
 		FROM boards b
-		WHERE id = #{no}
+		JOIN members m ON b.writer_id = m.id
+		WHERE b.id = #{no}
 	</select>
 
 	<!-- 인기 게시글 조회 -->

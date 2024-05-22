@@ -91,8 +91,7 @@ public class BoardController {
 	}
 	
 	@PutMapping("{no}")
-	public ResponseEntity<Void> editBoard(@PathVariable("no") int no,@RequestBody Board board) throws Exception{
-		board.setId(no);
+	public ResponseEntity<Void> editBoard(@RequestBody Board board) throws Exception{
 		service.editBoard(board);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

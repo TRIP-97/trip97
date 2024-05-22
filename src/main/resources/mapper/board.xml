@@ -3,16 +3,54 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip97.modules.board.model.mapper.BoardMapper">
 
-	<!-- 게시판 조회 -->
-	<select id = "selectBoards" resultType = "Board">
-		SELECT id, title, created_at, writer_nickname, view_count, like_count
-		FROM boards
+	<sql id="search">
+		<if test="word != null and word != ''">
+			<if test="key == 'title'">
+				and b.title like concat('%', #{word}, '%')
+			</if>
+			<if test="key == 'content'">
+				and b.content like concat('%', #{word}, '%')
+			</if>
+			<if test="key == 'writer'">
+				and b.writer_nickname like concat('%', #{word}, '%')
+			</if>
+		</if>
+	</sql>
+
+	<!-- 게시판 최신순 조회 -->
+	<select id = "selectBoardsNew" resultType = "Board">
+		SELECT *
+		FROM boards b
+		<where>
+			<include refid="search"></include>
+		</where>
+		ORDER BY b.id DESC
+		LIMIT #{start}, #{listsize};
+	</select>
+
+	<!-- 오래된 순 조회 -->
+	<select id = "selectBoardsOld" resultType = "Board">
+		SELECT *
+		FROM boards b
+		<where>
+			<include refid="search"></include>
+		</where>
+		ORDER BY b.id ASC
+		LIMIT #{start}, #{listsize};
+	</select>
+
+	<select id="getTotalBoardCount" parameterType="map" resultType="int">
+		SELECT count(b.id)
+		FROM boards b
+		<where>
+			<include refid="search"></include>
+		</where>
 	</select>
 	
 	<!-- 게시물 조회 -->
 	<select id = "selectBoardByNo" parameterType = "int" resultType = "Board">
-		SELECT id, title, content, created_at, view_count, like_count, writer_nickname, profile_image
-		FROM boards
+		SELECT b.id, b.writer_id b.title, b.content, b.created_at, b.view_count, b.like_count, b.writer_nickname
+		FROM boards b
 		WHERE id = #{no}
 	</select>
 

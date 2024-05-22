@@ -111,6 +111,7 @@ public class MemberController {
         return ResponseEntity.ok().headers(headers).body(updatedMember);
     }
 
+    // 이미지 등록하기
     private ProfileImageDto processImageFile(Member member, MultipartFile file) throws IOException {
         String today = new SimpleDateFormat("yyMMdd").format(new Date());
         String saveFolder = uploadPath + File.separator + "member" + File.separator + "upload" + File.separator + today;

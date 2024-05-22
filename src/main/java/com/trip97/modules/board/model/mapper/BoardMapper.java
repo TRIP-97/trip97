@@ -2,6 +2,7 @@ package com.trip97.modules.board.model.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,8 +12,11 @@ import com.trip97.modules.board.model.Board;
 public interface BoardMapper {
 	
 	// 게시판 조회 (글 전체 조회)
-	List<Board> selectBoards() throws SQLException;
-	
+	List<Board> selectBoardsNew(Map<String, Object> param) throws SQLException;
+	List<Board> selectBoardsOld(Map<String, Object> param) throws SQLException;
+
+	int getTotalBoardCount(Map<String, Object> param);
+
 	// 게시물 하나 조회
 	Board selectBoardByNo(int no) throws SQLException;
 	
@@ -33,5 +37,6 @@ public interface BoardMapper {
 
 	// 인기 게시글 조회
 	List<Board> selectHotBoard() throws SQLException;
+
 	
 }

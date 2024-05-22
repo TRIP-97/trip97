@@ -2,16 +2,14 @@ package com.trip97.modules.board.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
 public class Board {
 	
 	private int id; // 게시판 아이디
@@ -23,39 +21,5 @@ public class Board {
 	private int likeCount; // 좋아요 수
 	private String writerNickname; // 작성자 닉네임
 	private String profileImage; // 작성자 프로필 사진
-
-	public Board(){}
-
-	@JsonCreator
-	public Board(@JsonProperty("writerId") int writerId,
-				 @JsonProperty("title") String title,
-				 @JsonProperty("content") String content,
-				 @JsonProperty("writerNickname") String writerNickname) {
-		this.writerId = writerId;
-		this.title = title;
-		this.content = content;
-		this.writerNickname = writerNickname;
-	}
-
-	public Board(int id, String title, String content, Date createdAt, int viewCount, int likeCount, String writerNickname, String profileImage) {
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		this.createdAt = createdAt;
-		this.viewCount = viewCount;
-		this.likeCount = likeCount;
-		this.writerNickname = writerNickname;
-		this.profileImage = profileImage;
-	}
-
-	public Board(int id, String title, Date createdAt, String nickname, int viewCount, int likeCount) {
-		this.id = id;
-		this.title = title;
-		this.writerNickname = nickname;
-		this.createdAt = createdAt;
-		this.viewCount = viewCount;
-		this.likeCount = likeCount;
-	}
-
 
 }

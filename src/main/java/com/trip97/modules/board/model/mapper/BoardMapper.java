@@ -27,7 +27,7 @@ public interface BoardMapper {
 	int insertBoard(Board board) throws SQLException;
 	
 	// 게시물 수정
-	void updateBoard(Board board) throws SQLException;
+	void updateBoard(Map<String, Object> param) throws SQLException;
 	
 	// 게시물 삭제
 	void deleteBoard(int no) throws SQLException;

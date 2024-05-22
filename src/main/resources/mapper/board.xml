@@ -80,7 +80,7 @@
 	</insert>
 
 	<!-- 게시물 수정 -->
-	<update id = "updateBoard" parameterType = "Board">
+	<update id = "updateBoard">
 		UPDATE boards
 		SET title = #{title}, content = #{content}
 		WHERE id = #{id}

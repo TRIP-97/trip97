@@ -44,7 +44,7 @@ file:
   path: C:/trip97/
 
 # local domain
-local:
-  domain: http://192.168.120.61:8080
 #local:
-#  domain: http://localhost:8080
+#  domain: http://192.168.120.61:8080
+local:
+  domain: http://localhost:8080

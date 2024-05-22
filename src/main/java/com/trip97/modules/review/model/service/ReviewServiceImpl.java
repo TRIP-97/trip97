@@ -23,6 +23,7 @@ public class ReviewServiceImpl implements ReviewService {
         int reviewRating = review.getRating();
 
         double newRating = ((currentRating * currentReviewCount) + reviewRating) / (currentReviewCount + 1);
+        newRating = Math.round(newRating*100)/100.0;
 
         attractionMapper.updateRating(newRating, review.getAttractionId());
         attractionMapper.updateReviewCount(currentReviewCount + 1, review.getAttractionId());

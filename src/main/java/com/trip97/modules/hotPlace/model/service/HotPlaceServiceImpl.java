@@ -45,7 +45,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
         param.put("word", map.get("word") == null ? "" : map.get("word"));
         int currentPage = Integer.parseInt(map.get("pgno") == null ? "1" : map.get("pgno"));
-        int sizePerPage = Integer.parseInt(map.get("spp") == null ? "12" : map.get("spp"));
+        int sizePerPage = Integer.parseInt(map.get("spp") == null ? "8" : map.get("spp"));
         int start = currentPage * sizePerPage - sizePerPage;
         param.put("start", start);
         param.put("listsize", sizePerPage);

@@ -15,5 +15,6 @@ public interface FavoriteMapper {
     List<Favorite> selectFavoritesOld(Map<String, Object> param);
     Integer getTotalFavoriteCount(Map<String, Object> param);
     Integer deleteFavorite(Favorite favorite);
+    List<Favorite> selectFavorites(Integer memberId);
 
 }

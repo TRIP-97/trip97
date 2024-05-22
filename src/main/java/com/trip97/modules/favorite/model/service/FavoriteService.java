@@ -11,5 +11,6 @@ public interface FavoriteService {
     Integer registerFavorite(Favorite favorite);
     Favorite getFavorite(Favorite favorite);
     FavoriteListDto getFavorites(Map<String, String> map);
+    List<Favorite> getFavoritesByMemberId(Integer memberId);
     Integer removeFavorite(Favorite favorite);
 }

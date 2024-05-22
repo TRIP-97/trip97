@@ -55,7 +55,7 @@
     <select id="selectFavoritesNew" resultMap="favoriteResultMap">
         SELECT
         f.id, f.member_id, f.attraction_id, f.created_at,
-        a.title, a.overview, a.address, a.first_image, a.latitude, a.longitude, a.rating
+        a.title, a.overview, a.address, a.first_image AS firstImage, a.content_type_id AS contentTypeId, a.latitude, a.longitude, a.rating
         FROM favorites f
         JOIN attractions a ON f.attraction_id = a.id
         WHERE f.member_id = #{id}
@@ -68,7 +68,7 @@
     <select id="selectFavoritesOld" resultMap="favoriteResultMap">
         SELECT
         f.id, f.member_id, f.attraction_id, f.created_at,
-        a.title, a.overview, a.address, a.first_image, a.latitude, a.longitude, a.rating
+        a.title, a.overview, a.address, a.first_image AS firstImage, a.content_type_id AS contentTypeId, a.latitude, a.longitude, a.rating
         FROM favorites f
         JOIN attractions a ON f.attraction_id = a.id
         WHERE f.member_id = #{id}

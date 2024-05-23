@@ -39,7 +39,7 @@
             (#{id}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile}, #{fileinfo.url})
         </foreach>
     </insert>
-    
+
     <sql id="search">
         <if test="word != null and word != ''">
             <if test="key == 'name'">

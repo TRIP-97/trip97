@@ -91,9 +91,8 @@ public class BoardController {
 	}
 	
 	@PutMapping("{no}")
-	public ResponseEntity<Void> editBoard(@RequestBody Board board) throws Exception{
-		service.editBoard(board);
-		return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<Integer> editBoard(@RequestBody Board board) throws Exception{
+		return new ResponseEntity<Integer>(service.editBoard(board),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("{no}")

@@ -84,6 +84,9 @@
 		UPDATE boards
 		SET title = #{title}, content = #{content}
 		WHERE id = #{id}
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			SELECT last_insert_id()
+		</selectKey>
 	</update>
 
 	<!-- 게시물 삭제 -->

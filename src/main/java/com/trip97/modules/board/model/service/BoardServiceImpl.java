@@ -77,7 +77,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public void editBoard(Board board) throws Exception {
+	public int editBoard(Board board) throws Exception {
 
 		Map<String, Object> param = new HashMap<>();
 
@@ -85,7 +85,7 @@ public class BoardServiceImpl implements BoardService{
 		param.put("content",board.getContent());
 		param.put("id",board.getId());
 
-		mapper.updateBoard(param);
+		return mapper.updateBoard(param);
 	}
 
 	@Override

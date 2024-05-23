@@ -11,6 +11,11 @@ spring:
   web:
     resources:
       static-locations: "file:///C:/trip97/"
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
+
 # Jwt Setting
 jwt:
   secret-key: ${JWT_SECRET_KEY}
@@ -38,13 +43,13 @@ mybatis:
   type-aliases-package: com.trip97.modules.*.model
   mapper-locations: mapper/*.xml
 
-
 # file upload path : window
 file:
   path: C:/trip97/
 
 # local domain
-#local:
-#  domain: http://192.168.120.61:8080
 local:
-  domain: http://localhost:8080
+  domain: http://192.168.120.61:8080
+#local:
+#  domain: http://localhost:8080
+

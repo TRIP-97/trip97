@@ -12,13 +12,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
-@RequestMapping("/board/{boardId}/comment")
+@RequestMapping("/board/comment")
 @RequiredArgsConstructor
 public class BoardCommentController {
 
     private final CommentService commentService;
 
-    @GetMapping
+    @GetMapping("/{boardId}")
     public ResponseEntity<?> getCommentList(@PathVariable int boardId) {
         List<Comment> list = commentService.getComments(boardId, "board");
         if (list != null && !list.isEmpty()) {
@@ -29,21 +29,20 @@ public class BoardCommentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addComment(@PathVariable int boardId, @RequestParam int memberId, @RequestBody Comment comment) {
-        comment.setWriterId(memberId);
+    public ResponseEntity<?> addComment(@RequestBody Comment comment) {
         commentService.registerComment(comment, "board");
-        List<Comment> list = commentService.getComments(boardId, "board");
+        List<Comment> list = commentService.getComments(comment.getBoardId(), "board");
         return getListResponseEntity(list);
     }
 
     @PutMapping("/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable int boardId, @RequestBody Comment comment) {
+    public ResponseEntity<?> updateComment(@RequestBody Comment comment) {
         commentService.editComment(comment, "board");
-        List<Comment> list = commentService.getComments(boardId, "board");
+        List<Comment> list = commentService.getComments(comment.getBoardId(), "board");
         return getListResponseEntity(list);
     }
 
-    @DeleteMapping("/{commentId}")
+    @DeleteMapping("/{commentId}/{boardId}")
     public ResponseEntity<?> deleteComment(@PathVariable int boardId, @PathVariable int commentId) {
         commentService.removeComment(commentId, "board");
         List<Comment> list = commentService.getComments(boardId, "board");

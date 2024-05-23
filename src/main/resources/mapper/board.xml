@@ -59,8 +59,10 @@
 	<select id="selectHotBoard" resultType="Board">
 		SELECT *
 		FROM `boards`
+		WHERE `created_at` >= DATE_SUB(NOW(), INTERVAL 7 DAY)
 		ORDER BY `view_count` DESC
 			LIMIT 5;
+
 	</select>
 
 	<!-- 조회수 증가 -->
